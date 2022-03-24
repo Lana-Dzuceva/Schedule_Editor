@@ -14,7 +14,7 @@ namespace Shedule_Editor
         string ActiveGroup;
         int formwidth;
         int formheight;
-        //bool isFormLoaded = false;
+        
         public sheduleeditor()
         {
             InitializeComponent();
