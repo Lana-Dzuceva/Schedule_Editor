@@ -259,7 +259,6 @@ namespace Shedule_Editor
             {
                 e.Effect = DragDropEffects.Copy;
             }
-            save();
         }
 
 
@@ -277,6 +276,7 @@ namespace Shedule_Editor
                 
                 ShowLoads();
                 DisciplineCheck();
+                save();
             }
             catch
             { }
@@ -288,7 +288,6 @@ namespace Shedule_Editor
             {
                 e.Effect = DragDropEffects.Copy;
             }
-            save();
         }
         private void dataGridViewShedule_MouseDown(object sender, MouseEventArgs e)
         {
@@ -302,10 +301,7 @@ namespace Shedule_Editor
             }
         }
 
-        private void dataGridViewShedule_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            //save();
-        }
+        
 
     }
 }

@@ -92,7 +92,6 @@ namespace Shedule_Editor
             this.dataGridViewShedule.Size = new System.Drawing.Size(472, 421);
             this.dataGridViewShedule.TabIndex = 0;
             this.dataGridViewShedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewShedule_CellDoubleClick);
-            this.dataGridViewShedule.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewShedule_CellValueChanged);
             this.dataGridViewShedule.SelectionChanged += new System.EventHandler(this.dataGridViewShedule_SelectionChanged);
             this.dataGridViewShedule.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridViewShedule_DragDrop);
             this.dataGridViewShedule.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridViewShedule_DragEnter);
