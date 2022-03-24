@@ -92,9 +92,11 @@ namespace Shedule_Editor
             this.dataGridViewShedule.Size = new System.Drawing.Size(472, 421);
             this.dataGridViewShedule.TabIndex = 0;
             this.dataGridViewShedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewShedule_CellDoubleClick);
+            this.dataGridViewShedule.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewShedule_CellValueChanged);
             this.dataGridViewShedule.SelectionChanged += new System.EventHandler(this.dataGridViewShedule_SelectionChanged);
             this.dataGridViewShedule.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridViewShedule_DragDrop);
             this.dataGridViewShedule.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridViewShedule_DragEnter);
+            this.dataGridViewShedule.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dataGridViewShedule_MouseDown);
             // 
             // imageListLarge
             // 
@@ -166,6 +168,8 @@ namespace Shedule_Editor
             this.listViewFile.TabIndex = 8;
             this.listViewFile.UseCompatibleStateImageBehavior = false;
             this.listViewFile.View = System.Windows.Forms.View.Details;
+            this.listViewFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.listViewFile_DragDrop);
+            this.listViewFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.listViewFile_DragEnter);
             this.listViewFile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewFile_MouseDown);
             // 
             // listViewGroup

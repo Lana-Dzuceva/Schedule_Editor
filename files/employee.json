@@ -1,0 +1,25 @@
+{
+	"Teachers": [
+	{
+		"LastName":"adfva",
+		"FirstName":"qqq",
+		"Subjects":
+		{
+			"Items": [
+				{
+					"Name":"mmm",
+					"NumberOfHours":50,
+					"Group":"21",
+					"ClassForm":"ff"
+				},
+				{
+					"Name":"mmm1",
+					"NumberOfHours":51,
+					"Group":"211",
+					"ClassForm":"ff1"
+				}
+			]
+		}
+	}
+	]
+}

@@ -1,0 +1,226 @@
+{
+	"Teachers": [
+    {
+		"LastName":"Макаренко",
+	    "FirstName":"М.Д.",
+	    "Subjects": 
+		{
+			"Items": [
+			{
+				"Name":"Основы и методология программирования",
+				"NumberOfHours":200,
+				"Group":"11 группа, 1 подгруппа",
+				"ClassForm":"Лаб."
+			},
+			{
+				"Name": "Алгоритмы и структуры данных",
+				"NumberOfHours": 76,
+				"Group": "11 группа, 1 подгруппа",
+				"ClassForm": "Лаб."
+			}
+			]
+		}
+	},
+	{
+		"LastName":"Койбаев",
+	    "FirstName":"В.А.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "Алгебра",
+					"NumberOfHours": 10000,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "Лекция"
+				},
+				{
+					"Name": "Алгебра",
+					"NumberOfHours": 10000,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "Лекция"
+				}
+			]
+		}
+	},
+	{
+		"LastName":"Воронцова",
+	    "FirstName":"И.А.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "Алгоритмы и структуры данных",
+					"NumberOfHours": 200,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "Лекция"
+				},
+				{
+					"Name": "Алгоритмы и структуры данных",
+					"NumberOfHours": 200,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "Лекция"
+				},
+				{
+					"Name": "Дискретная математика",
+					"NumberOfHours": 150,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "Лекция"
+				},
+				{
+					"Name": "Дискретная математика",
+					"NumberOfHours": 150,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "Лекция"
+				}
+			]
+		}
+	},
+	{
+		"LastName":"Нартиков",
+	    "FirstName":"А.Г.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "Алгоритмы и структуры данных",
+					"NumberOfHours": 190,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "Лаб."
+				},
+				{
+					"Name": "Основы и методология программирования",
+					"NumberOfHours": 190,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "Лаб."
+				}
+			]
+		}
+	},
+	{
+		"LastName":"Джусовева",
+	    "FirstName":"Н.А.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "Теория чисел",
+					"NumberOfHours": 140,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "практ."
+				},
+				{
+					"Name": "Теория чисел",
+					"NumberOfHours": 140,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "практ."
+				}
+			]
+		}
+	},
+	{
+		"LastName":"Калустьянц",
+	    "FirstName":"К.А.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "Элективные дисциплины по физической культуре и спорту",
+					"NumberOfHours": 200,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "практ."
+				},
+				{
+					"Name": "Элективные дисциплины по физической культуре и спорту",
+					"NumberOfHours": 200,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "практ."
+				}
+			]
+		}
+	},
+	{
+		"LastName":"Монако",
+	    "FirstName":"Т.П.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "Математический анализ",
+					"NumberOfHours": 200,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "практ."
+				},
+				{
+					"Name": "Математический анализ",
+					"NumberOfHours": 200,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "практ."
+				}
+			]
+		}
+	},
+	{
+		"LastName":"Кулаев",
+	    "FirstName":"Р.Ч.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "Математический анализ",
+					"NumberOfHours": 220,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "лекц."
+				},
+				{
+					"Name": "Математический анализ",
+					"NumberOfHours": 220,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "лекц."
+				}
+			]
+		}
+	},
+	{
+		"LastName":"Батагова",
+	    "FirstName":"Л.Х.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "История России",
+					"NumberOfHours": 160,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "практ."
+				},
+				{
+					"Name": "История России",
+					"NumberOfHours": 160,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "практ."
+				}
+			]
+		}
+	},
+	{
+		"LastName":"Малиева",
+	    "FirstName":"З.К.",
+	    "Subjects": 
+		{
+			"Items": [
+				{
+					"Name": "Психология социального взаимодействия",
+					"NumberOfHours": 130,
+					"Group": "11 группа, 1 подгруппа",
+					"ClassForm": "практ."
+				},
+				{
+					"Name": "Психология социального взаимодействия",
+					"NumberOfHours": 130,
+					"Group": "11 группа, 2 подгруппа",
+					"ClassForm": "практ."
+				}
+			]
+		}
+	}
+    ]
+}

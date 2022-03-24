@@ -1,0 +1,61 @@
+{
+	"Teachers": [
+    {
+		"LastName":"Макаренко",
+	    "FirstName":"Мария",
+	    "Subjects": 
+		{
+			"Items": [
+			{
+				"Name":"Vfnf",
+				"NumberOfHours":200,
+				"Group":11,
+				"ClassForm":"Практика"
+			},
+			{
+				"Name":"Чето",
+				"NumberOfHours":76,
+				"Group":17,
+				"ClassForm": "Лекция"
+			}
+			]
+		}
+	},
+	{
+		"LastName":"voaag",
+	    "FirstName":"ggdaagdagds",
+	    "Subjects": 
+		{
+			"Items": [
+			{
+				"Name":"Психawdгия",
+				"NumberOfHours":200,
+				"Group":14,
+				"ClassForm":"Практика"
+			}
+			]
+		}
+	},
+	{
+		"LastName":"Clinkz",
+	    "FirstName":"ne imba",
+	    "Subjects": 
+		{
+			"Items": [
+			{
+				"Name":"Психоsfnгия",
+				"NumberOfHours":200,
+				"Group":11,
+				"ClassForm":"Практика"
+			},
+			{
+				"Name":"Чsfnо",
+				"NumberOfHours":76,
+				"Group": 14,
+				"ClassForm": "Лекция"
+			}
+			]
+		}
+	}
+    ]
+}

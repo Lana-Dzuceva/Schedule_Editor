@@ -14,6 +14,7 @@ namespace Shedule_Editor
         string ActiveGroup;
         int formwidth;
         int formheight;
+        //bool isFormLoaded = false;
         public sheduleeditor()
         {
             InitializeComponent();
@@ -92,21 +93,7 @@ namespace Shedule_Editor
                 ListViewItem group = new ListViewItem(item.name);
                 listViewGroup.Items.Add(group);
             }
-
-            /*
-            List<string> ls = new List<string>();
-            for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
-            {
-                ls.Add("fhgfgf");
-            }
-            SubgroupSchedule ss = new SubgroupSchedule("1121212", ls);
-            List<SubgroupSchedule> lS = new List<SubgroupSchedule>();
-            lS.Add(ss);
-            ListSubgroupShedule SS = new ListSubgroupShedule(lS);
-            var sg = JsonConvert.SerializeObject(SS);
-            Console.WriteLine(sg);
-            using (StreamWriter sw = new StreamWriter("subgroupShedule.json"))
-                sw.WriteLine(sg);*/
+            //isFormLoaded = true;
         }
 
         // при нажатии на группу заполняется таблица с расписанием и отображаюся нагрузки преподователей в листе преподователей
@@ -133,48 +120,8 @@ namespace Shedule_Editor
         }
 
 
-        private void listViewFile_MouseDown(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                int indexSource = listViewFile.Items.IndexOf(listViewFile.GetItemAt(e.X, e.Y));
-                string s = listViewFile.Items[indexSource].SubItems[0].Text + " " + listViewFile.Items[indexSource].SubItems[1].Text + " " + listViewFile.Items[indexSource].SubItems[2].Text;
-                listViewFile.DoDragDrop(s, DragDropEffects.Copy);
-            }
-            catch
-            {
 
-            }
-        }
-
-        private void dataGridViewShedule_DragDrop(object sender, DragEventArgs e)
-        {
-            try
-            {
-                string cellvalue = e.Data.GetData(typeof(string)) as string;
-                Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
-
-                DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 20);
-                if (hittest.ColumnIndex != -1
-                    && hittest.RowIndex != -1)
-                    dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
-                DisciplineCheck();
-            }
-            catch
-            {
-
-            }
-        }
-
-        private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.Text))
-            {
-                e.Effect = DragDropEffects.Copy;
-            }
-        }
-
-        private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
+        void save()
         {
             if (ActiveGroup != null)
             {
@@ -207,12 +154,16 @@ namespace Shedule_Editor
                 }
 
                 var sg = JsonConvert.SerializeObject(AllSheduleGroup);
-                Console.WriteLine(sg);
+                //Console.WriteLine(sg);
                 using (StreamWriter sw = new StreamWriter("subgroupShedule.json"))
                     sw.WriteLine(sg);
 
                 DisciplineCheck();
             }
+        }
+        private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            save();
         }
 
         private void dataGridViewShedule_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -247,6 +198,7 @@ namespace Shedule_Editor
         }
         private void ShowLoads()
         {
+            listViewFile.Items.Clear();
             foreach (var item in AllTeachers.Teachers)
             {
                 foreach (var sub in item.Subjects.Items)
@@ -276,29 +228,84 @@ namespace Shedule_Editor
             }
         }
 
-        //private void dataGridViewShedule_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    //((DataGridView)sender).CurrentCell = null;
-        //    if (e.Button == MouseButtons.Left)
-        //    {
-        //        DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
-        //        if (info.RowIndex >= 0)
-        //        {
-        //            if (info.RowIndex >= 0 && info.ColumnIndex >= 0)
-        //            {
-        //                string text = (String)
-        //                       dataGridViewShedule.Rows[info.RowIndex].Cells[info.ColumnIndex].Value;
-        //                if (text != null)
-        //                    dataGridViewShedule.DoDragDrop(text, DragDropEffects.Copy);
-        //                dataGridViewShedule.Rows[info.RowIndex].Cells[info.ColumnIndex].Value = "";
-        //            }
-        //        }
-        //    }
-        //}
+        private void listViewFile_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                int indexSource = listViewFile.Items.IndexOf(listViewFile.GetItemAt(e.X, e.Y));
+                string s = listViewFile.Items[indexSource].SubItems[0].Text + " " + listViewFile.Items[indexSource].SubItems[1].Text + " " + listViewFile.Items[indexSource].SubItems[2].Text;
+                listViewFile.DoDragDrop(s, DragDropEffects.Copy);
+            }
+            catch
+            {
+
+            }
+        }
+
 
         private void dataGridViewShedule_SelectionChanged(object sender, EventArgs e)
         {
             this.dataGridViewShedule.ClearSelection();
         }
+        private void listViewFile_DragDrop(object sender, DragEventArgs e)
+        {
+            ShowLoads();
+            DisciplineCheck();
+
+        }
+        private void listViewFile_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Text))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            save();
+        }
+
+
+        private void dataGridViewShedule_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                string cellvalue = e.Data.GetData(typeof(string)) as string;
+                Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
+
+                DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 20);
+                if (hittest.ColumnIndex != -1
+                    && hittest.RowIndex != -1)
+                    dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
+                
+                ShowLoads();
+                DisciplineCheck();
+            }
+            catch
+            { }
+        }
+
+        private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Text))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            save();
+        }
+        private void dataGridViewShedule_MouseDown(object sender, MouseEventArgs e)
+        {
+            DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
+            string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
+            if (!string.IsNullOrEmpty(s))
+            {
+                dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
+                dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = "";
+                listViewFile.DoDragDrop(s, DragDropEffects.Copy);
+            }
+        }
+
+        private void dataGridViewShedule_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //save();
+        }
+
     }
 }
