@@ -16,11 +16,10 @@ namespace Shedule_Editor
         string ActiveGroup;
         int formwidth;
         int formheight;
-        int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16  };
-
         string dataDAD = "";
         int xDAD = 0;
         int yDAD = 0;
+        int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16  };
         public sheduleeditor()
         {
             InitializeComponent();
@@ -319,7 +318,12 @@ namespace Shedule_Editor
                 {
                     dataDAD = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
                     dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
-                
+
+                    
+                }
+
+
+
                 ShowLoads();
                 DisciplineCheck();
                 Save();
