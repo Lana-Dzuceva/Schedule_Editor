@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Windows.Media;
+//using System.Windows.Media;
 
 namespace Shedule_Editor
 {
@@ -16,7 +16,8 @@ namespace Shedule_Editor
         string ActiveGroup;
         int formwidth;
         int formheight;
-        
+        int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16  };
+
         public sheduleeditor()
         {
             InitializeComponent();
@@ -36,7 +37,7 @@ namespace Shedule_Editor
             listViewFile.Columns.Add("Преподователь");
             listViewFile.Columns.Add("Тип занятия");
             listViewFile.Columns.Add("Кол-во часов");
-            listViewFile.Columns[0].Width = 90;
+            listViewFile.Columns[0].Width = 190;
             listViewFile.Columns[1].Width = 120;
             listViewFile.Columns[2].Width = 100;
             listViewFile.Columns[3].Width = 100;
@@ -53,11 +54,30 @@ namespace Shedule_Editor
             Type type = listViewFile.GetType();
             PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance);
             propertyInfo.SetValue(listViewFile, true, null);
+
+            dataGridViewAudience.RowCount = 6;
+            dataGridViewAudience.ColumnCount = 10;
+            dataGridViewAudience.BackgroundColor = Color.White;
+            //dataGridViewAudience.DefaultCellStyle.
+            //dataGridViewAudience.Rows[0].Height = 150;
+
+            //DataGridViewRow row = dataGridViewAudience.Rows[0];
+            //row.Height = 10;
+            //dataGridViewAudience[0, 0].Value = "1";
+            //dataGridViewAudience[3, 5].Value = "1";
+            //dataGridViewAudience.RowTemplate.Height = 30;
+            foreach (DataGridViewRow row in dataGridViewAudience.Rows)
+            {
+                row.Height = 40;
+                
+            }
+            
         }
 
         // считываем данные с файлов и заполняем лист групп
         private void FormShedule_Load(object sender, EventArgs e)
         {
+
             using (StreamReader file = new StreamReader("newloads.json"))
             {
                 string json = file.ReadToEnd();
@@ -102,7 +122,19 @@ namespace Shedule_Editor
                 ListViewItem group = new ListViewItem(item.name);
                 listViewGroup.Items.Add(group);
             }
-            //isFormLoaded = true;
+            for (int ind = 0, row = 0, col = 0; ind < audiences.Length; ind++)
+            {
+                dataGridViewAudience[col, row].Value = audiences[ind];
+                col++;
+                if (col == dataGridViewAudience.Columns.Count)
+                {
+                    col = 0;
+                    row++;
+                }
+            }
+            
+            dataGridViewAudience.Hide();
+            MessageBox.Show(dataGridViewAudience.Width.ToString());
         }
 
         // при нажатии на группу заполняется таблица с расписанием и отображаюся нагрузки преподователей в листе преподователей
@@ -130,6 +162,7 @@ namespace Shedule_Editor
 
         void Save()
         {
+            
             if (ActiveGroup != null)
             {
                 List<string> ls = new List<string>();
@@ -280,7 +313,7 @@ namespace Shedule_Editor
                 if (hittest.ColumnIndex != -1
                     && hittest.RowIndex != -1)
                     dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
-                
+
                 ShowLoads();
                 DisciplineCheck();
                 Save();
@@ -310,12 +343,13 @@ namespace Shedule_Editor
         private void AudiencesForm_Click(object sender, EventArgs e)
         {
             listViewFile.Hide();
+            dataGridViewAudience.Show();
         }
 
         private void ShedulesForm_Click(object sender, EventArgs e)
         {
             listViewFile.Show();
+            dataGridViewAudience.Hide();
         }
     }
 }
-    
