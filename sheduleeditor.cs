@@ -16,7 +16,9 @@ namespace Shedule_Editor
         string ActiveGroup;
         int formwidth;
         int formheight;
-        
+        string dataDAD = "";
+        int xDAD = 0;
+        int yDAD = 0;
         public sheduleeditor()
         {
             InitializeComponent();
@@ -256,6 +258,7 @@ namespace Shedule_Editor
         }
         private void listViewFile_DragDrop(object sender, DragEventArgs e)
         {
+            dataGridViewShedule[xDAD, yDAD].Value = "";
             ShowLoads();
             DisciplineCheck();
 
@@ -276,11 +279,15 @@ namespace Shedule_Editor
                 string cellvalue = e.Data.GetData(typeof(string)) as string;
                 Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
 
-                DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 20);
+                DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 24);
                 if (hittest.ColumnIndex != -1
                     && hittest.RowIndex != -1)
+                {
+                    dataDAD = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
                     dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
-                
+                    
+                }
+
                 ShowLoads();
                 DisciplineCheck();
                 Save();
@@ -291,18 +298,23 @@ namespace Shedule_Editor
         private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.Text))
-            {
+            { 
                 e.Effect = DragDropEffects.Copy;
             }
         }
         private void dataGridViewShedule_MouseDown(object sender, MouseEventArgs e)
         {
             DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
+
             string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
             if (!string.IsNullOrEmpty(s))
             {
+                xDAD = info.ColumnIndex;
+                yDAD = info.RowIndex;
+
                 dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = "";
+                //dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = "";
+                dataGridViewShedule[xDAD, yDAD].Value = dataDAD;
                 listViewFile.DoDragDrop(s, DragDropEffects.Copy);
             }
         }
