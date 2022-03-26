@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Media;
 
 namespace Shedule_Editor
 {
@@ -44,25 +46,32 @@ namespace Shedule_Editor
                 dataGridViewShedule.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
             //dataGridViewShedule.DefaultCellStyle.SelectionBackColor = dataGridViewShedule.DefaultCellStyle.BackColor;
+
+            //убираем мерцание и свойства выделения
+            listViewFile.HoverSelection = false;
+            listViewFile.FullRowSelect = true;
+            Type type = listViewFile.GetType();
+            PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance);
+            propertyInfo.SetValue(listViewFile, true, null);
         }
 
         // считываем данные с файлов и заполняем лист групп
         private void FormShedule_Load(object sender, EventArgs e)
         {
-            using (StreamReader file = new StreamReader("newloads.json"))
+            using (StreamReader file = new StreamReader("C://Users/sosla/source/repos/Shedule_Editor2/files/newloads.json"))
             {
                 string json = file.ReadToEnd();
                 AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(json);
             }
 
             ListGroups AllGroup;
-            using (StreamReader file = new StreamReader("groups.json"))
+            using (StreamReader file = new StreamReader("C://Users/sosla/source/repos/Shedule_Editor2/files/groups.json"))
             {
                 string json = file.ReadToEnd();
                 AllGroup = JsonConvert.DeserializeObject<ListGroups>(json);
             }
 
-            using (StreamReader file = new StreamReader("subgroupShedule.json"))
+            using (StreamReader file = new StreamReader("C://Users/sosla/source/repos/Shedule_Editor2/files/subgroupShedule.json"))
             {
                 string json = file.ReadToEnd();
                 AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
@@ -119,9 +128,7 @@ namespace Shedule_Editor
             }
         }
 
-
-
-        void save()
+        void Save()
         {
             if (ActiveGroup != null)
             {
@@ -163,7 +170,7 @@ namespace Shedule_Editor
         }
         private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            save();
+            Save();
         }
 
         private void dataGridViewShedule_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -276,12 +283,11 @@ namespace Shedule_Editor
                 
                 ShowLoads();
                 DisciplineCheck();
-                save();
+                Save();
             }
             catch
             { }
         }
-
         private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.Text))
@@ -301,7 +307,15 @@ namespace Shedule_Editor
             }
         }
 
-        
+        private void AudiencesForm_Click(object sender, EventArgs e)
+        {
+            listViewFile.Hide();
+        }
 
+        private void ShedulesForm_Click(object sender, EventArgs e)
+        {
+            listViewFile.Show();
+        }
     }
 }
+    
