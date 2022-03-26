@@ -58,20 +58,20 @@ namespace Shedule_Editor
         // считываем данные с файлов и заполняем лист групп
         private void FormShedule_Load(object sender, EventArgs e)
         {
-            using (StreamReader file = new StreamReader("C://Users/sosla/source/repos/Shedule_Editor2/files/newloads.json"))
+            using (StreamReader file = new StreamReader("newloads.json"))
             {
                 string json = file.ReadToEnd();
                 AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(json);
             }
 
             ListGroups AllGroup;
-            using (StreamReader file = new StreamReader("C://Users/sosla/source/repos/Shedule_Editor2/files/groups.json"))
+            using (StreamReader file = new StreamReader("groups.json"))
             {
                 string json = file.ReadToEnd();
                 AllGroup = JsonConvert.DeserializeObject<ListGroups>(json);
             }
 
-            using (StreamReader file = new StreamReader("C://Users/sosla/source/repos/Shedule_Editor2/files/subgroupShedule.json"))
+            using (StreamReader file = new StreamReader("subgroupShedule.json"))
             {
                 string json = file.ReadToEnd();
                 AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
