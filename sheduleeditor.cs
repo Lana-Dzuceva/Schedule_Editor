@@ -20,7 +20,7 @@ namespace Shedule_Editor
         int xDAD = 0;
         int yDAD = 0;
         int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16  };
-        int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 603, 604, 605, 606, 607, 608, 609, 610, 611, 612, 613, 614, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16  };
+
         public sheduleeditor()
         {
             InitializeComponent();
