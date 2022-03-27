@@ -55,10 +55,10 @@ namespace Shedule_Editor
             listViewFile.Columns.Add("Преподователь");
             listViewFile.Columns.Add("Тип занятия");
             listViewFile.Columns.Add("Кол-во часов");
-            listViewFile.Columns[0].Width = 190;
-            listViewFile.Columns[1].Width = 120;
-            listViewFile.Columns[2].Width = 100;
-            listViewFile.Columns[3].Width = 100;
+            listViewFile.Columns[0].Width = 220;
+            listViewFile.Columns[1].Width = 150;
+            listViewFile.Columns[2].Width = 150;
+            listViewFile.Columns[3].Width = 150;
 
 
             //убираем мерцание и свойства выделения
@@ -77,6 +77,7 @@ namespace Shedule_Editor
                 row.Height = 40;
             }
             listViewAudienceDescription.Height = 350;
+            listViewFile.Font = new System.Drawing.Font(FontFamily.GenericSansSerif, 12);
         }
 
         // считываем данные с файлов и заполняем лист групп
