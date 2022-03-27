@@ -16,7 +16,7 @@ namespace Shedule_Editor
         string ActiveGroup;
         int formwidth;
         int formheight;
-        int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16  };
+        int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 603, 604, 605, 606, 607, 608, 609, 610, 611, 612, 613, 614, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16  };
 
         public sheduleeditor()
         {
@@ -55,7 +55,7 @@ namespace Shedule_Editor
             PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance);
             propertyInfo.SetValue(listViewFile, true, null);
 
-            dataGridViewAudience.RowCount = 6;
+            dataGridViewAudience.RowCount = 5;
             dataGridViewAudience.ColumnCount = 10;
             dataGridViewAudience.BackgroundColor = Color.White;
             //dataGridViewAudience.DefaultCellStyle.
@@ -134,7 +134,9 @@ namespace Shedule_Editor
             }
             
             dataGridViewAudience.Hide();
-            MessageBox.Show(dataGridViewAudience.Width.ToString());
+            listViewAudienceDescription.Items.Add("описание аудитории");
+            listViewAudienceDescription.Hide();
+            //MessageBox.Show(dataGridViewAudience.Width.ToString());
         }
 
         // при нажатии на группу заполняется таблица с расписанием и отображаюся нагрузки преподователей в листе преподователей
@@ -337,6 +339,7 @@ namespace Shedule_Editor
                 dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
                 dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = "";
                 listViewFile.DoDragDrop(s, DragDropEffects.Copy);
+                dataGridViewAudience.DoDragDrop(s, DragDropEffects.Copy);
             }
         }
 
@@ -344,12 +347,52 @@ namespace Shedule_Editor
         {
             listViewFile.Hide();
             dataGridViewAudience.Show();
+            listViewAudienceDescription.Show();
         }
 
         private void ShedulesForm_Click(object sender, EventArgs e)
         {
             listViewFile.Show();
             dataGridViewAudience.Hide();
+            listViewAudienceDescription.Hide();
+        }
+
+        private void dataGridViewAudience_MouseDown(object sender, MouseEventArgs e)
+        {
+            DataGridView.HitTestInfo info = dataGridViewAudience.HitTest(e.X, e.Y);
+            string s = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
+            if (!string.IsNullOrEmpty(s))
+            {
+                dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
+                dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value = "";
+                
+            }
+        }
+
+        private void dataGridViewAudience_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Text))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void dataGridViewAudience_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                string cellvalue = e.Data.GetData(typeof(string)) as string;
+                Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
+
+                DataGridView.HitTestInfo hittest = dataGridViewAudience.HitTest(cursorLocation.X, cursorLocation.Y - 20);
+                if (hittest.ColumnIndex != -1
+                    && hittest.RowIndex != -1)
+                    dataGridViewAudience[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
+
+                Save();
+            }
+            catch
+            { }
         }
     }
 }

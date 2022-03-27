@@ -48,10 +48,7 @@ namespace Shedule_Editor
             this.listViewGroup = new System.Windows.Forms.ListView();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.dataGridViewAudience = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.listViewAudienceDescription = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShedule)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAudience)).BeginInit();
@@ -229,11 +226,6 @@ namespace Shedule_Editor
             this.dataGridViewAudience.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewAudience.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAudience.ColumnHeadersVisible = false;
-            this.dataGridViewAudience.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
             this.dataGridViewAudience.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewAudience.GridColor = System.Drawing.SystemColors.ControlLight;
             this.dataGridViewAudience.Location = new System.Drawing.Point(477, 24);
@@ -245,34 +237,19 @@ namespace Shedule_Editor
             this.dataGridViewAudience.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAudience.Size = new System.Drawing.Size(364, 147);
             this.dataGridViewAudience.TabIndex = 12;
+            this.dataGridViewAudience.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridViewAudience_DragDrop);
+            this.dataGridViewAudience.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridViewAudience_DragEnter);
+            this.dataGridViewAudience.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dataGridViewAudience_MouseDown);
             // 
-            // Column1
+            // listViewAudienceDescription
             // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Visible = false;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Column2";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Visible = false;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Column3";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Visible = false;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Column4";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            this.Column4.Visible = false;
+            this.listViewAudienceDescription.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.listViewAudienceDescription.HideSelection = false;
+            this.listViewAudienceDescription.Location = new System.Drawing.Point(477, 74);
+            this.listViewAudienceDescription.Name = "listViewAudienceDescription";
+            this.listViewAudienceDescription.Size = new System.Drawing.Size(364, 97);
+            this.listViewAudienceDescription.TabIndex = 13;
+            this.listViewAudienceDescription.UseCompatibleStateImageBehavior = false;
             // 
             // sheduleeditor
             // 
@@ -281,6 +258,7 @@ namespace Shedule_Editor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(841, 445);
+            this.Controls.Add(this.listViewAudienceDescription);
             this.Controls.Add(this.dataGridViewAudience);
             this.Controls.Add(this.splitter2);
             this.Controls.Add(this.listViewGroup);
@@ -317,10 +295,7 @@ namespace Shedule_Editor
         private System.Windows.Forms.ToolStripMenuItem AudiencesForm;
         private System.Windows.Forms.ToolStripMenuItem ShedulesForm;
         private System.Windows.Forms.DataGridView dataGridViewAudience;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.ListView listViewAudienceDescription;
     }
 }
 
