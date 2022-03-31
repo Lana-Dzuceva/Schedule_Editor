@@ -83,21 +83,21 @@ namespace Shedule_Editor
         // считываем данные с файлов и заполняем лист групп
         private void FormShedule_Load(object sender, EventArgs e)
         {
-
-            using (StreamReader file = new StreamReader("newloads.json"))
+            var curDir = Environment.CurrentDirectory;
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\newloads.json"))
             {
                 string json = file.ReadToEnd();
                 AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(json);
             }
 
             ListGroups AllGroup;
-            using (StreamReader file = new StreamReader("groups.json"))
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\groups.json"))
             {
                 string json = file.ReadToEnd();
                 AllGroup = JsonConvert.DeserializeObject<ListGroups>(json);
             }
 
-            using (StreamReader file = new StreamReader("subgroupShedule.json"))
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
             {
                 string json = file.ReadToEnd();
                 AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
@@ -162,6 +162,19 @@ namespace Shedule_Editor
 
         void Save()
         {
+            //______________область экспериментов с аудиториями_________________
+            //AudienceGroup ag = new AudienceGroup();
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    Audience audience = new Audience(600 + i, 15, i % 2 == 0, false, 15 + i % 4, true);
+            //    ag.Add(audience);
+            //}
+            //using (StreamWriter sw = new StreamWriter("audienceGroup.json"))
+            //    sw.WriteLine(JsonConvert.SerializeObject(ag));
+            ////MessageBox.Show(audience.ToString());
+
+            //________________________________________________________________
+
 
             if (ActiveGroup != null)
             {
@@ -192,10 +205,10 @@ namespace Shedule_Editor
                 {
                     AllSheduleGroup.Shedule.Add(sb);
                 }
-
+                var curDir = Environment.CurrentDirectory;
                 var sg = JsonConvert.SerializeObject(AllSheduleGroup);
                 //Console.WriteLine(sg);
-                using (StreamWriter sw = new StreamWriter("subgroupShedule.json"))
+                using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
                     sw.WriteLine(sg);
 
                 DisciplineCheck();

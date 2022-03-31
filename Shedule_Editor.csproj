@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audience.cs" />
     <Compile Include="sheduleeditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +73,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Files\B010302-21-1-ПМ_1.plx.xls" />
+    <None Include="Files\employee.json" />
+    <None Include="Files\groups.json" />
+    <None Include="Files\loads.json" />
+    <None Include="Files\newloads.json" />
+    <None Include="Files\subgroupShedule.json" />
+    <None Include="Files\___Нагрузки_КафПМ_2021-22.xlsm" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
