@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddLoads.cs" />
     <Compile Include="Audience.cs" />
     <Compile Include="sheduleeditor.cs">
       <SubType>Form</SubType>

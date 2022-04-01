@@ -17,9 +17,9 @@ namespace Shedule_Editor
         string ActiveGroup;
         int formwidth;
         int formheight;
-        string dataDAD = "";
-        int xDAD = 0;
-        int yDAD = 0;
+        string activeDiscipline = "";
+        int activeDisX = -1;
+        int activeDisY = -1;
         int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 
         public sheduleeditor()
@@ -372,14 +372,12 @@ namespace Shedule_Editor
             }
         }
 
-
         private void dataGridViewShedule_SelectionChanged(object sender, EventArgs e)
         {
             this.dataGridViewShedule.ClearSelection();
         }
         private void listViewFile_DragDrop(object sender, DragEventArgs e)
         {
-            dataGridViewShedule[xDAD, yDAD].Value = "";
             ShowLoads();
             DisciplineCheck();
 
@@ -408,10 +406,10 @@ namespace Shedule_Editor
                 {
                     if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 ||
                         !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0)
-                    {
-                        dataDAD = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
+                    { 
+                        activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
                         dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
-
+                        //dataGridViewShedule[activeDisX, activeDisY].Value = activeDiscipline;
                     }
 
                 }
@@ -439,19 +437,17 @@ namespace Shedule_Editor
                 string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
                 if (!string.IsNullOrEmpty(s))
                 {
-                    xDAD = info.ColumnIndex;
-                    yDAD = info.RowIndex;
+                    activeDisX = info.ColumnIndex;
+                    activeDisY = info.RowIndex;
 
                     dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                    //dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = "";
-                    dataGridViewShedule[xDAD, yDAD].Value = dataDAD;
+                    dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = "";
                     listViewFile.DoDragDrop(s, DragDropEffects.Copy);
                     dataGridViewAudience.DoDragDrop(s, DragDropEffects.Copy);
                 }
             }
             catch (Exception)
             { }
-
         }
 
         private void AudiencesForm_Click(object sender, EventArgs e)
@@ -506,6 +502,11 @@ namespace Shedule_Editor
             catch
             { }
 
+        }
+
+        private void AddLoadsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddLoads.GenerateNewLoads();
         }
     }
 }
