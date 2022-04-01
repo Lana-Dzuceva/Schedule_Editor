@@ -353,7 +353,6 @@ namespace Shedule_Editor
                     {
                         dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsSubjects[i];
                         dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsAudiences[i];
-
                     }
                 }
             }
