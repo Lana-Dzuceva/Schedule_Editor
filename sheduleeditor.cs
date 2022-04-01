@@ -13,6 +13,7 @@ namespace Shedule_Editor
     {
         ListTeachers AllTeachers;
         ListSubgroupShedule AllSheduleGroup;
+        AudienceGroup AllAudiences;
         string ActiveGroup;
         int formwidth;
         int formheight;
@@ -59,7 +60,7 @@ namespace Shedule_Editor
             listViewFile.Columns[1].Width = 150;
             listViewFile.Columns[2].Width = 150;
             listViewFile.Columns[3].Width = 150;
-
+            listViewFile.Font = new System.Drawing.Font(FontFamily.GenericSansSerif, 12);
 
             //убираем мерцание и свойства выделения
             listViewFile.HoverSelection = false;
@@ -68,16 +69,37 @@ namespace Shedule_Editor
             PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance);
             propertyInfo.SetValue(listViewFile, true, null);
 
-            dataGridViewAudience.RowCount = 5;
-            dataGridViewAudience.ColumnCount = 10;
-            dataGridViewAudience.BackgroundColor = Color.White;
-
             foreach (DataGridViewRow row in dataGridViewAudience.Rows)
             {
                 row.Height = 40;
             }
+            dataGridViewAudience.RowCount = 5;
+            dataGridViewAudience.ColumnCount = 10;
+            dataGridViewAudience.BackgroundColor = Color.White;
+
+            //---------------------------------
             listViewAudienceDescription.Height = 350;
-            listViewFile.Font = new System.Drawing.Font(FontFamily.GenericSansSerif, 12);
+            listViewAudienceDescription.Columns.Add("Номер");
+            listViewAudienceDescription.Columns.Add("1");
+            listViewAudienceDescription.Columns.Add("2");
+            listViewAudienceDescription.Columns.Add("3");
+            listViewAudienceDescription.Columns[2].Width = 220;
+            listViewAudienceDescription.Columns[1].Width = 220;
+            listViewAudienceDescription.Columns[0].Width = 220;
+            listViewAudienceDescription.Columns[3].Width = 220;
+
+            ListViewItem listViewItem = new ListViewItem("a");
+            listViewItem.SubItems.Add("a");
+
+            listViewAudienceDescription.Items.Add(listViewItem);
+            ListViewItem listViewItem2 = new ListViewItem("b");
+            //listViewItem.SubItems.Add("a");
+
+            listViewAudienceDescription.Items.Add(listViewItem2);
+
+
+
+
         }
 
         // считываем данные с файлов и заполняем лист групп
@@ -102,7 +124,23 @@ namespace Shedule_Editor
                 string json = file.ReadToEnd();
                 AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
             }
-
+            //foreach (var item in AllSheduleGroup.Shedule)
+            //{
+            //    item.ScheduleFieldsAudiences = new List<string>();
+            //    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+            //    {
+            //        item.ScheduleFieldsAudiences.Add("");
+            //    }
+            //}
+            ////Stas
+            //var sg = JsonConvert.SerializeObject(AllSheduleGroup);
+            //using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
+            //    sw.WriteLine(sg);
+            //using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
+            //{
+            //    string json = file.ReadToEnd();
+            //    AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
+            //}
             foreach (var item in AllTeachers.Teachers)
             {
                 foreach (var sub in item.Subjects.Items)
@@ -131,8 +169,15 @@ namespace Shedule_Editor
             AudienceCheck();
 
             dataGridViewAudience.Hide();
-            listViewAudienceDescription.Items.Add("описание аудитории");
+            //listViewAudienceDescription.Items.Add("описание аудитории");
             listViewAudienceDescription.Hide();
+
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\audienceGroup.json"))
+            {
+                string json = file.ReadToEnd();
+                AllAudiences = JsonConvert.DeserializeObject<AudienceGroup>(json);
+            }
+
         }
 
         // при нажатии на группу заполняется таблица с расписанием и отображаюся нагрузки преподователей в листе преподователей
@@ -171,7 +216,7 @@ namespace Shedule_Editor
             //}
             //using (StreamWriter sw = new StreamWriter("audienceGroup.json"))
             //    sw.WriteLine(JsonConvert.SerializeObject(ag));
-            ////MessageBox.Show(audience.ToString());
+            //MessageBox.Show(audience.ToString());
 
             //________________________________________________________________
 
@@ -179,6 +224,7 @@ namespace Shedule_Editor
             if (ActiveGroup != null)
             {
                 List<string> ls = new List<string>();
+                List<string> audiences = new List<string>();
                 for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                 {
                     if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
@@ -187,16 +233,24 @@ namespace Shedule_Editor
                     }
                     else
                         ls.Add(dataGridViewShedule.Rows[i].Cells[0].Value.ToString());
+                    if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
+                    {
+                        audiences.Add("");
+                    }
+                    else
+                        audiences.Add(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
+
                 }
 
-                SubgroupSchedule sb = new SubgroupSchedule(ActiveGroup, ls);
+                SubgroupSchedule sb = new SubgroupSchedule(ActiveGroup, ls, audiences);
 
                 bool r = false;
                 foreach (var item in AllSheduleGroup.Shedule)
                 {
                     if (item.Name == ActiveGroup)
                     {
-                        item.Strings = ls;
+                        item.ScheduleFieldsSubjects = ls;
+                        item.ScheduleFieldsAudiences = audiences;
                         r = true;
                     }
                 }
@@ -297,7 +351,9 @@ namespace Shedule_Editor
                 {
                     for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                     {
-                        dataGridViewShedule.Rows[i].Cells[0].Value = item.Strings[i];
+                        dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsSubjects[i];
+                        dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsAudiences[i];
+
                     }
                 }
             }
@@ -450,7 +506,7 @@ namespace Shedule_Editor
             }
             catch
             { }
-            
+
         }
     }
 }

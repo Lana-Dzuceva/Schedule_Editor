@@ -35,18 +35,21 @@ namespace Shedule_Editor
             Groups = groups;
         }
     }
-
+     
     class SubgroupSchedule
     {
         public string Name { get; set; }
 
-        public List<string> Strings { get; set; }
+        public List<string> ScheduleFieldsSubjects { get; set; }
+        public List<string> ScheduleFieldsAudiences { get; set; }
 
-        public SubgroupSchedule(string name, List<string> strings)
+        public SubgroupSchedule(string name, List<string> strings, List<string> numbers)
         {
             Name = name;
-            Strings = strings;
+            ScheduleFieldsSubjects = strings;
+            ScheduleFieldsAudiences = numbers;
         }
+
     }
 
     class ListSubgroupShedule
