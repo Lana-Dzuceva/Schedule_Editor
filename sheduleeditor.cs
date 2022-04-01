@@ -357,7 +357,7 @@ namespace Shedule_Editor
                 }
             }
         }
-
+        //Stas
         private void listViewFile_MouseDown(object sender, MouseEventArgs e)
         {
             try
