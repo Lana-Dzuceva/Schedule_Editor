@@ -30,11 +30,11 @@ namespace Shedule_Editor
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(sheduleeditor));
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.dataGridViewShedule = new System.Windows.Forms.DataGridView();
             this.imageListLarge = new System.Windows.Forms.ImageList(this.components);
             this.imageListSmall = new System.Windows.Forms.ImageList(this.components);
@@ -42,6 +42,7 @@ namespace Shedule_Editor
             this.SaveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AudiencesForm = new System.Windows.Forms.ToolStripMenuItem();
             this.ShedulesForm = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddLoadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter3 = new System.Windows.Forms.Splitter();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.listViewFile = new System.Windows.Forms.ListView();
@@ -49,7 +50,6 @@ namespace Shedule_Editor
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.dataGridViewAudience = new System.Windows.Forms.DataGridView();
             this.listViewAudienceDescription = new System.Windows.Forms.ListView();
-            this.AddLoadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShedule)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAudience)).BeginInit();
@@ -65,14 +65,14 @@ namespace Shedule_Editor
             this.dataGridViewShedule.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewShedule.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewShedule.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewShedule.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewShedule.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewShedule.ColumnHeadersHeight = 30;
             this.dataGridViewShedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewShedule.Dock = System.Windows.Forms.DockStyle.Left;
@@ -82,18 +82,18 @@ namespace Shedule_Editor
             this.dataGridViewShedule.MultiSelect = false;
             this.dataGridViewShedule.Name = "dataGridViewShedule";
             this.dataGridViewShedule.ReadOnly = true;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewShedule.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewShedule.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewShedule.RowHeadersWidth = 60;
             this.dataGridViewShedule.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dataGridViewShedule.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridViewShedule.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewShedule.ShowEditingIcon = false;
             this.dataGridViewShedule.Size = new System.Drawing.Size(472, 421);
             this.dataGridViewShedule.TabIndex = 0;
@@ -156,6 +156,14 @@ namespace Shedule_Editor
             this.ShedulesForm.Text = "Преподаватели";
             this.ShedulesForm.Click += new System.EventHandler(this.ShedulesForm_Click);
             // 
+            // AddLoadsToolStripMenuItem
+            // 
+            this.AddLoadsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.AddLoadsToolStripMenuItem.Name = "AddLoadsToolStripMenuItem";
+            this.AddLoadsToolStripMenuItem.Size = new System.Drawing.Size(125, 24);
+            this.AddLoadsToolStripMenuItem.Text = "Загрузить нагрузки";
+            this.AddLoadsToolStripMenuItem.Click += new System.EventHandler(this.AddLoadsToolStripMenuItem_Click);
+            // 
             // splitter3
             // 
             this.splitter3.Location = new System.Drawing.Point(472, 24);
@@ -184,7 +192,7 @@ namespace Shedule_Editor
             this.listViewFile.HideSelection = false;
             this.listViewFile.HoverSelection = true;
             this.listViewFile.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3});
+            listViewItem1});
             this.listViewFile.Location = new System.Drawing.Point(477, 24);
             this.listViewFile.MultiSelect = false;
             this.listViewFile.Name = "listViewFile";
@@ -255,14 +263,6 @@ namespace Shedule_Editor
             this.listViewAudienceDescription.TabIndex = 13;
             this.listViewAudienceDescription.UseCompatibleStateImageBehavior = false;
             this.listViewAudienceDescription.View = System.Windows.Forms.View.Details;
-            // 
-            // AddLoadsToolStripMenuItem
-            // 
-            this.AddLoadsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.AddLoadsToolStripMenuItem.Name = "AddLoadsToolStripMenuItem";
-            this.AddLoadsToolStripMenuItem.Size = new System.Drawing.Size(125, 24);
-            this.AddLoadsToolStripMenuItem.Text = "Загрузить нагрузки";
-            this.AddLoadsToolStripMenuItem.Click += new System.EventHandler(this.AddLoadsToolStripMenuItem_Click);
             // 
             // sheduleeditor
             // 
