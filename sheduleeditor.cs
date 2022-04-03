@@ -106,7 +106,7 @@ namespace Shedule_Editor
         private void FormShedule_Load(object sender, EventArgs e)
         {
             var curDir = Environment.CurrentDirectory;
-            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\newloads.json"))
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\loads.json"))
             {
                 string json = file.ReadToEnd();
                 AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(json);
@@ -148,7 +148,7 @@ namespace Shedule_Editor
                     bool r = false;
                     foreach (var grp in AllGroup.Groups)
                     {
-                        if (grp.name == sub.Group)
+                        if (grp.Name == sub.Group)
                         {
                             r = true;
                         }
@@ -160,10 +160,10 @@ namespace Shedule_Editor
                     }
                 }
             }
-
+            //listViewGroup.Items.Clear();
             foreach (var item in AllGroup.Groups)
             {
-                ListViewItem group = new ListViewItem(item.name);
+                ListViewItem group = new ListViewItem(item.Name);
                 listViewGroup.Items.Add(group);
             }
             AudienceCheck();

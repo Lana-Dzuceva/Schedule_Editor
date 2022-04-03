@@ -1,6 +1,8 @@
 ﻿using ClosedXML.Excel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 namespace Shedule_Editor
@@ -25,40 +27,64 @@ namespace Shedule_Editor
                     xlPath = openFileDialog.FileName;
                 }
             }
-            try
+
+            List<Group> listGroups = new List<Group>();
+            List<Teacher> teachlst = new List<Teacher>();
+            XLWorkbook book = new XLWorkbook(xlPath);
+
+
+            var lists = book.Worksheets;
+            foreach (var item in lists)
             {
-                List<Teacher> teachlst = new List<Teacher>();
-                XLWorkbook book = new XLWorkbook(xlPath);
-                var lists = book.Worksheets;
-                foreach (var item in lists)
+                string[] listName = item.Name.Split();
+                if (!listName.Contains("Вакансия") && !listName.Contains("поручение"))
                 {
-                    string listName = item.Name;
-                    if (!listName.Contains("Вакансия") && !listName.Contains("поручение"))
+                    string lastName = listName[0];
+                    string firstName = listName[1];
+                    List<Subject> listSubjects = new List<Subject>();
+                    Subject sb;
+                    int st = 13;
+                    string dir = item.Cell("B" + st.ToString()).GetValue<string>();
+                    while (!dir.Contains("Итого"))
                     {
-                        string[] fioTeach = item.Cell("A4").GetValue<string>().Split();
-                        List<Subject> listSubjects = new List<Subject>();
-                        Subject sb;
-                        int st = 13;
-                        string dir = item.Cell("B" + st.ToString()).GetValue<string>();
-                        while (!dir.Contains("Итого"))
+                        dir = item.Cell("B" + st.ToString()).GetValue<string>();
+                        string classF = item.Cell("J" + st.ToString()).GetValue<string>();
+                        string group = item.Cell("G" + st.ToString()).GetValue<string>();
+                        if ((dir.Contains("Математика") || dir.Contains("Информатика")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
                         {
-                            dir = item.Cell("B" + st.ToString()).GetValue<string>();
-                            string classF = item.Cell("J" + st.ToString()).GetValue<string>();
-                            if ((dir.Contains("Математика") || dir.Contains("Информатика")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
-                            {
-                                sb = new Subject(item.Cell("E" + st.ToString()).GetValue<string>(),
-                                    item.Cell("O" + st.ToString()).GetValue<int>(),
-                                    item.Cell("G" + st.ToString()).GetValue<string>(),
-                                    classF);
-                                listSubjects.Add(sb);
-                            }
-                            st++;
+                            if (classF.Contains("Практич")) classF = "Практика";
+                            sb = new Subject(item.Cell("E" + st.ToString()).GetValue<string>(),
+                                item.Cell("O" + st.ToString()).GetValue<int>(),
+                                group,
+                                classF);
+                            listSubjects.Add(sb);
+                            listGroups.Add(new Group(group));
                         }
+                        st++;
+                    }
+                    int indEl = ListTeachers.ContainsTeacher(teachlst, lastName, firstName);
+                    if (indEl != -1)
+                    {
+                        foreach (var sbs in listSubjects)
+                        {
+                            teachlst[indEl].Subjects.Items.Add(sbs);
+                        }
+                    }
+                    else
+                    {
+                        teachlst.Add(new Teacher(lastName, firstName, new ListSubjects(listSubjects)));
                     }
                 }
             }
-            catch (Exception)
-            { }
+            ListTeachers ListT = new ListTeachers(teachlst);
+            var lt = JsonConvert.SerializeObject(ListT);
+            using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\loads.json"))
+                sw.WriteLine(lt);
+            ListGroups Gr = new ListGroups(listGroups);
+            var gr = JsonConvert.SerializeObject(Gr);
+            using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\groups.json"))
+                sw.WriteLine(gr);
+            MessageBox.Show("Считывание завершено");
         }
     }
 }
