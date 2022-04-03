@@ -70,17 +70,21 @@ namespace Shedule_Editor
                         }
                         st++;
                     }
-                    int indEl = ListTeachers.ContainsTeacher(teachlst, lastName, firstName);
-                    if (indEl != -1)
+                    //MessageBox.Show(listSubjects.Count.ToString());
+                    if (listSubjects.Count > 0)
                     {
-                        foreach (var sbs in listSubjects)
+                        int indEl = ListTeachers.ContainsTeacher(teachlst, lastName, firstName);
+                        if (indEl != -1)
                         {
-                            teachlst[indEl].Subjects.Items.Add(sbs);
+                            foreach (var sbs in listSubjects)
+                            {
+                                teachlst[indEl].Subjects.Items.Add(sbs);
+                            }
                         }
-                    }
-                    else
-                    {
-                        teachlst.Add(new Teacher(lastName, firstName, new ListSubjects(listSubjects)));
+                        else
+                        {
+                            teachlst.Add(new Teacher(lastName, firstName, new ListSubjects(listSubjects)));
+                        }
                     }
                 }
             }

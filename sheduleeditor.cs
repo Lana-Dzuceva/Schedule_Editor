@@ -141,25 +141,26 @@ namespace Shedule_Editor
             //    string json = file.ReadToEnd();
             //    AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
             //}
-            foreach (var item in AllTeachers.Teachers)
-            {
-                foreach (var sub in item.Subjects.Items)
-                {
-                    bool r = false;
-                    foreach (var grp in AllGroup.Groups)
-                    {
-                        if (grp.Name == sub.Group)
-                        {
-                            r = true;
-                        }
-                    }
-                    if (!r)
-                    {
-                        Group newGroup = new Group(sub.Group);
-                        AllGroup.Groups.Add(newGroup);
-                    }
-                }
-            }
+            //Какая то хрень
+            //foreach (var item in AllTeachers.Teachers)
+            //{
+            //    foreach (var sub in item.Subjects.Items)
+            //    {
+            //        bool r = false;
+            //        foreach (var grp in AllGroup.Groups)
+            //        {
+            //            if (grp.Name == sub.Group)
+            //            {
+            //                r = true;
+            //            }
+            //        }
+            //        if (!r)
+            //        {
+            //            Group newGroup = new Group(sub.Group);
+            //            AllGroup.Groups.Add(newGroup);
+            //        }
+            //    }
+            //}
             //listViewGroup.Items.Clear();
             foreach (var item in AllGroup.Groups)
             {
@@ -185,12 +186,6 @@ namespace Shedule_Editor
         {
             try
             {
-                // Теперь это бесполезно??
-                for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
-                {
-                    dataGridViewShedule.Rows[i].Cells[0].Value = "";
-                }
-                //
                 listViewFile.Items.Clear();
                 var it = listViewGroup.SelectedItems[0];
                 ActiveGroup = it.Text;
@@ -199,10 +194,9 @@ namespace Shedule_Editor
                 ShowLoads();
                 DisciplineCheck();
             }
-            catch
-            {
+            catch(Exception)
+            { }
 
-            }
         }
 
         void Save()
@@ -349,7 +343,7 @@ namespace Shedule_Editor
             {
                 if (item.Name == ActiveGroup)
                 {
-                    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+                    for (int i = 0; i < item.ScheduleFieldsSubjects.Count; i++)
                     {
                         dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsSubjects[i];
                         dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsAudiences[i];
