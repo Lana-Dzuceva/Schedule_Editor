@@ -14,15 +14,24 @@ namespace Shedule_Editor
         {
             Teachers = teachers;
         }
+
+        public static int ContainsTeacher(List<Teacher> lst, string lastName, string firstName)
+        {
+            for (int i = 0; i < lst.Count; i++)
+            {
+                if (lst[i].LastName == lastName && lst[i].FirstName == firstName) return i;
+            }
+            return -1;
+        }
     }
 
     class Group
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public Group(string name)
         {
-            this.name = name;
+            this.Name = name;
         }
     }
 
@@ -33,6 +42,15 @@ namespace Shedule_Editor
         public ListGroups(List<Group> groups)
         {
             Groups = groups;
+        }
+
+        public static bool ContainsGroups(List<Group> lst, string gr)
+        {
+            for (int i = 0; i < lst.Count; i++)
+            {
+                if (lst[i].Name == gr) return true;
+            }
+            return false;
         }
     }
      

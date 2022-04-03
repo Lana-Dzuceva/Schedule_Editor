@@ -136,7 +136,7 @@ namespace Shedule_Editor
             // 
             this.SaveFileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.SaveFileToolStripMenuItem.Name = "SaveFileToolStripMenuItem";
-            this.SaveFileToolStripMenuItem.Size = new System.Drawing.Size(119, 24);
+            this.SaveFileToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
             this.SaveFileToolStripMenuItem.Text = "Сохранить в файл";
             this.SaveFileToolStripMenuItem.Click += new System.EventHandler(this.SaveFileToolStripMenuItem_Click);
             // 
