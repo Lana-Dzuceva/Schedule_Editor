@@ -30,6 +30,7 @@ namespace Shedule_Editor
 
             List<Group> listGroups = new List<Group>();
             List<Teacher> teachlst = new List<Teacher>();
+            List<SubgroupSchedule> subgroupShedule = new List<SubgroupSchedule>();
             XLWorkbook book = new XLWorkbook(xlPath);
 
 
@@ -49,16 +50,23 @@ namespace Shedule_Editor
                     {
                         dir = item.Cell("B" + st.ToString()).GetValue<string>();
                         string classF = item.Cell("J" + st.ToString()).GetValue<string>();
-                        string group = item.Cell("G" + st.ToString()).GetValue<string>();
+                        string[] group = item.Cell("G" + st.ToString()).GetValue<string>().Split(',');
                         if ((dir.Contains("Математика") || dir.Contains("Информатика")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
                         {
-                            if (classF.Contains("Практич")) classF = "Практика";
-                            sb = new Subject(item.Cell("E" + st.ToString()).GetValue<string>(),
-                                item.Cell("O" + st.ToString()).GetValue<int>(),
-                                group,
-                                classF);
-                            listSubjects.Add(sb);
-                            listGroups.Add(new Group(group));
+                            for (int i = 0; i < group.Length; i++)
+                            {
+                                if (classF.Contains("Практич")) classF = "Практика";
+                                sb = new Subject(item.Cell("E" + st.ToString()).GetValue<string>(),
+                                    item.Cell("O" + st.ToString()).GetValue<int>(),
+                                    group[i],
+                                    classF);
+                                listSubjects.Add(sb);
+                                if (!ListGroups.ContainsGroups(listGroups, group[i]))
+                                {
+                                    listGroups.Add(new Group(group[i]));
+                                    subgroupShedule.Add(new SubgroupSchedule(group[i], new List<string>(), new List<string>()));
+                                }
+                            }
                         }
                         st++;
                     }
@@ -76,14 +84,22 @@ namespace Shedule_Editor
                     }
                 }
             }
+
             ListTeachers ListT = new ListTeachers(teachlst);
             var lt = JsonConvert.SerializeObject(ListT);
             using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\loads.json"))
                 sw.WriteLine(lt);
+
             ListGroups Gr = new ListGroups(listGroups);
             var gr = JsonConvert.SerializeObject(Gr);
             using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\groups.json"))
                 sw.WriteLine(gr);
+
+            ListSubgroupShedule SGS = new ListSubgroupShedule(subgroupShedule);
+            var fsg = JsonConvert.SerializeObject(SGS);
+            using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
+                sw.WriteLine(fsg);
+
             MessageBox.Show("Считывание завершено");
         }
     }

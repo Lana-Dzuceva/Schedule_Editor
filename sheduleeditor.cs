@@ -96,16 +96,22 @@ namespace Shedule_Editor
             //listViewItem.SubItems.Add("a");
 
             listViewAudienceDescription.Items.Add(listViewItem2);
-
-
-
-
         }
 
         // считываем данные с файлов и заполняем лист групп
         private void FormShedule_Load(object sender, EventArgs e)
         {
             var curDir = Environment.CurrentDirectory;
+            var infFileShGroup = new FileInfo(curDir + @"\..\..\Files\subgroupShedule.json");
+            if (infFileShGroup.Length == 0)
+                AddLoads.GenerateNewLoads();
+
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
+            {
+                string json = file.ReadToEnd();
+                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
+            }
+
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\loads.json"))
             {
                 string json = file.ReadToEnd();
@@ -117,12 +123,6 @@ namespace Shedule_Editor
             {
                 string json = file.ReadToEnd();
                 AllGroup = JsonConvert.DeserializeObject<ListGroups>(json);
-            }
-
-            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
-            {
-                string json = file.ReadToEnd();
-                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
             }
             //foreach (var item in AllSheduleGroup.Shedule)
             //{

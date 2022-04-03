@@ -43,6 +43,15 @@ namespace Shedule_Editor
         {
             Groups = groups;
         }
+
+        public static bool ContainsGroups(List<Group> lst, string gr)
+        {
+            for (int i = 0; i < lst.Count; i++)
+            {
+                if (lst[i].Name == gr) return true;
+            }
+            return false;
+        }
     }
      
     class SubgroupSchedule
