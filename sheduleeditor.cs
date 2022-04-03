@@ -15,11 +15,11 @@ namespace Shedule_Editor
         ListSubgroupShedule AllSheduleGroup;
         AudienceGroup AllAudiences;
         string ActiveGroup;
-        int formwidth;
-        int formheight;
         string activeDiscipline = "";
         int activeDisX = -1;
         int activeDisY = -1;
+        int formwidth;
+        int formheight;
         int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 
         public sheduleeditor()
@@ -378,9 +378,9 @@ namespace Shedule_Editor
         }
         private void listViewFile_DragDrop(object sender, DragEventArgs e)
         {
+            activeDiscipline = "";
             ShowLoads();
             DisciplineCheck();
-
         }
         private void listViewFile_DragEnter(object sender, DragEventArgs e)
         {
@@ -406,7 +406,9 @@ namespace Shedule_Editor
                 {
                     if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 ||
                         !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0)
-                    { 
+                        //(hittest.ColumnIndex != activeDisX || hittest.RowIndex != activeDisY))
+
+                    {
                         activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
                         dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
                         //dataGridViewShedule[activeDisX, activeDisY].Value = activeDiscipline;
@@ -435,13 +437,15 @@ namespace Shedule_Editor
                 DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
 
                 string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
+                activeDisX = info.ColumnIndex;
+                activeDisY = info.RowIndex;
                 if (!string.IsNullOrEmpty(s))
                 {
-                    activeDisX = info.ColumnIndex;
-                    activeDisY = info.RowIndex;
-
                     dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                    dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = "";
+                    dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = activeDiscipline;
+                    activeDiscipline = "";
+                    activeDisX = -1;
+                    activeDisY = -1;
                     listViewFile.DoDragDrop(s, DragDropEffects.Copy);
                     dataGridViewAudience.DoDragDrop(s, DragDropEffects.Copy);
                 }
@@ -466,15 +470,20 @@ namespace Shedule_Editor
 
         private void dataGridViewAudience_MouseDown(object sender, MouseEventArgs e)
         {
-            DataGridView.HitTestInfo info = dataGridViewAudience.HitTest(e.X, e.Y);
-            string s = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
-            if (!string.IsNullOrEmpty(s))
+            try
             {
-                dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value = "";
+                DataGridView.HitTestInfo info = dataGridViewAudience.HitTest(e.X, e.Y);
+                string s = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
+                if (!string.IsNullOrEmpty(s))
+                {
+                    dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
+                    dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value = "";
 
+                }
+                AudienceCheck();
             }
-            AudienceCheck();
+            catch(Exception)
+            { }
         }
 
         private void dataGridViewAudience_DragEnter(object sender, DragEventArgs e)
