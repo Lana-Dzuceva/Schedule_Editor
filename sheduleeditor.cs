@@ -20,7 +20,7 @@ namespace Shedule_Editor
         string dataDAD = "";
         int xDAD = 0;
         int yDAD = 0;
-        int[] audiences = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+        List<int> audiences;// = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 
         public sheduleeditor()
         {
@@ -80,24 +80,17 @@ namespace Shedule_Editor
             //---------------------------------
             listViewAudienceDescription.Height = 350;
             listViewAudienceDescription.Columns.Add("Номер");
-            listViewAudienceDescription.Columns.Add("1");
-            listViewAudienceDescription.Columns.Add("2");
-            listViewAudienceDescription.Columns.Add("3");
-            listViewAudienceDescription.Columns[2].Width = 220;
-            listViewAudienceDescription.Columns[1].Width = 220;
-            listViewAudienceDescription.Columns[0].Width = 220;
-            listViewAudienceDescription.Columns[3].Width = 220;
-
-            ListViewItem listViewItem = new ListViewItem("a");
-            listViewItem.SubItems.Add("a");
-
-            listViewAudienceDescription.Items.Add(listViewItem);
-            ListViewItem listViewItem2 = new ListViewItem("b");
-            //listViewItem.SubItems.Add("a");
-
-            listViewAudienceDescription.Items.Add(listViewItem2);
+            listViewAudienceDescription.Columns.Add("Количество мест");
+            listViewAudienceDescription.Columns.Add("Меловая доска");
+            listViewAudienceDescription.Columns.Add("Маркерная доска");
+            listViewAudienceDescription.Columns.Add("Количество компьютеров");
+            listViewAudienceDescription.Columns.Add("Проектор");
 
 
+            for (int i = 0; i < listViewAudienceDescription.Columns.Count; i++)
+            {
+                listViewAudienceDescription.Columns[i].Width = 120;
+            }
 
 
         }
@@ -166,7 +159,7 @@ namespace Shedule_Editor
                 ListViewItem group = new ListViewItem(item.name);
                 listViewGroup.Items.Add(group);
             }
-            AudienceCheck();
+            
 
             dataGridViewAudience.Hide();
             //listViewAudienceDescription.Items.Add("описание аудитории");
@@ -177,7 +170,12 @@ namespace Shedule_Editor
                 string json = file.ReadToEnd();
                 AllAudiences = JsonConvert.DeserializeObject<AudienceGroup>(json);
             }
-
+            audiences = new List<int>();
+            foreach (var item in AllAudiences.Audiences)
+            {
+                audiences.Add(item.Number);
+            }
+            AudienceCheck();
         }
 
         // при нажатии на группу заполняется таблица с расписанием и отображаюся нагрузки преподователей в листе преподователей
@@ -305,7 +303,7 @@ namespace Shedule_Editor
         }
         void AudienceCheck()
         {
-            for (int ind = 0, row = 0, col = 0; ind < audiences.Length; ind++)
+            for (int ind = 0, row = 0, col = 0; ind < audiences.Count; ind++)
             {
                 bool f = false;
                 for (int i = 0; i < dataGridViewShedule.Columns.Count && !f; i++)
@@ -470,15 +468,40 @@ namespace Shedule_Editor
 
         private void dataGridViewAudience_MouseDown(object sender, MouseEventArgs e)
         {
-            DataGridView.HitTestInfo info = dataGridViewAudience.HitTest(e.X, e.Y);
-            string s = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
-            if (!string.IsNullOrEmpty(s))
+            try
             {
-                dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value = "";
 
+
+
+                DataGridView.HitTestInfo info = dataGridViewAudience.HitTest(e.X, e.Y);
+                string s = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
+                if (!string.IsNullOrEmpty(s))
+                {
+                    foreach (var item in AllAudiences.Audiences)
+                    {
+                        if (item.Number.ToString() == s)
+                        {
+                            listViewAudienceDescription.Items.Clear();
+                            ListViewItem listViewItem = new ListViewItem(s);
+                            listViewItem.SubItems.Add(item.CountOfSeats.ToString());
+                            listViewItem.SubItems.Add(item.ChalkBoard ? "Есть" : "Нет");
+                            listViewItem.SubItems.Add(item.MarkerBoard ? "Есть" : "Нет");
+                            listViewItem.SubItems.Add(item.NumberOfComputers.ToString());
+                            listViewItem.SubItems.Add(item.Projector ? "Есть" : "Нет");
+                            listViewAudienceDescription.Items.Add(listViewItem);
+                        }
+
+                    }
+                    dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
+                    dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value = "";
+
+                }
+                AudienceCheck();
             }
-            AudienceCheck();
+            catch (Exception)
+            {
+            }
+
         }
 
         private void dataGridViewAudience_DragEnter(object sender, DragEventArgs e)
@@ -507,5 +530,7 @@ namespace Shedule_Editor
             { }
 
         }
+
+
     }
 }
