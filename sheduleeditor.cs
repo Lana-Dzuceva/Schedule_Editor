@@ -414,8 +414,8 @@ namespace Shedule_Editor
                 if (hittest.ColumnIndex != -1
                     && hittest.RowIndex != -1)
                 {
-                    if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 && AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex & 4) ||
-                        !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0)
+                    if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 && AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex % 4) ||
+                        !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0 && AllSheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex % 4))
                         //(hittest.ColumnIndex != activeDisX || hittest.RowIndex != activeDisY))
 
                     {

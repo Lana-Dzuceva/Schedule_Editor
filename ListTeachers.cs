@@ -53,7 +53,7 @@ namespace Shedule_Editor
             return false;
         }
     }
-     
+
     class SubgroupSchedule
     {
         public string Name { get; set; }
@@ -67,7 +67,7 @@ namespace Shedule_Editor
             ScheduleFieldsSubjects = strings;
             ScheduleFieldsAudiences = numbers;
         }
-        
+
 
     }
 
@@ -83,27 +83,16 @@ namespace Shedule_Editor
         {
             foreach (var subGroup in Shedule)
             {
+                if (subGroup.ScheduleFieldsAudiences[numberOfLecture] == number) return false;
 
-                for (int i = 0; i < 5; i++)
-                {
-                    if (subGroup.ScheduleFieldsAudiences[numberOfLecture + i * 4] == number) return false;
-                }
-                //foreach (var item in subGroup.ScheduleFieldsAudiences)
-                //{
-                //    if (item == number) return false;
-                //}
             }
             return true;
         }
-        bool IsLectorFree(string secName, int numberOfLecture)
+        public bool IsLectorFree(string secName, int numberOfLecture)
         {
             foreach (var subGroup in Shedule)
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    if (subGroup.ScheduleFieldsSubjects[numberOfLecture + i * 4].Contains(secName)) return false;
-                }
-                //if (subGroup.ScheduleFieldsSubjects[index].Contains(secName)) return false;
+                if (subGroup.ScheduleFieldsSubjects[numberOfLecture].Contains(secName)) return false;
             }
             return true;
         }
