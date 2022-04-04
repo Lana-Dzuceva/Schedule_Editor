@@ -42,6 +42,7 @@ namespace Shedule_Editor
             this.SaveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AudiencesForm = new System.Windows.Forms.ToolStripMenuItem();
             this.ShedulesForm = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddLoadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter3 = new System.Windows.Forms.Splitter();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.listViewFile = new System.Windows.Forms.ListView();
@@ -122,7 +123,8 @@ namespace Shedule_Editor
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SaveFileToolStripMenuItem,
             this.AudiencesForm,
-            this.ShedulesForm});
+            this.ShedulesForm,
+            this.AddLoadsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(0);
@@ -134,7 +136,7 @@ namespace Shedule_Editor
             // 
             this.SaveFileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.SaveFileToolStripMenuItem.Name = "SaveFileToolStripMenuItem";
-            this.SaveFileToolStripMenuItem.Size = new System.Drawing.Size(119, 24);
+            this.SaveFileToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
             this.SaveFileToolStripMenuItem.Text = "Сохранить в файл";
             this.SaveFileToolStripMenuItem.Click += new System.EventHandler(this.SaveFileToolStripMenuItem_Click);
             // 
@@ -153,6 +155,14 @@ namespace Shedule_Editor
             this.ShedulesForm.Size = new System.Drawing.Size(104, 24);
             this.ShedulesForm.Text = "Преподаватели";
             this.ShedulesForm.Click += new System.EventHandler(this.ShedulesForm_Click);
+            // 
+            // AddLoadsToolStripMenuItem
+            // 
+            this.AddLoadsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.AddLoadsToolStripMenuItem.Name = "AddLoadsToolStripMenuItem";
+            this.AddLoadsToolStripMenuItem.Size = new System.Drawing.Size(125, 24);
+            this.AddLoadsToolStripMenuItem.Text = "Загрузить нагрузки";
+            this.AddLoadsToolStripMenuItem.Click += new System.EventHandler(this.AddLoadsToolStripMenuItem_Click);
             // 
             // splitter3
             // 
@@ -299,6 +309,7 @@ namespace Shedule_Editor
         private System.Windows.Forms.ToolStripMenuItem ShedulesForm;
         private System.Windows.Forms.DataGridView dataGridViewAudience;
         private System.Windows.Forms.ListView listViewAudienceDescription;
+        private System.Windows.Forms.ToolStripMenuItem AddLoadsToolStripMenuItem;
     }
 }
 

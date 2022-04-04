@@ -15,6 +15,9 @@ namespace Shedule_Editor
         ListSubgroupShedule AllSheduleGroup;
         AudienceGroup AllAudiences;
         string ActiveGroup;
+        string activeDiscipline = "";
+        int activeDisX = -1;
+        int activeDisY = -1;
         int formwidth;
         int formheight;
         string dataDAD = "";
@@ -99,7 +102,17 @@ namespace Shedule_Editor
         private void FormShedule_Load(object sender, EventArgs e)
         {
             var curDir = Environment.CurrentDirectory;
-            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\newloads.json"))
+            var infFileShGroup = new FileInfo(curDir + @"\..\..\Files\subgroupShedule.json");
+            if (infFileShGroup.Length == 0)
+                AddLoads.GenerateNewLoads();
+
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
+            {
+                string json = file.ReadToEnd();
+                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
+            }
+
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\loads.json"))
             {
                 string json = file.ReadToEnd();
                 AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(json);
@@ -110,12 +123,6 @@ namespace Shedule_Editor
             {
                 string json = file.ReadToEnd();
                 AllGroup = JsonConvert.DeserializeObject<ListGroups>(json);
-            }
-
-            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
-            {
-                string json = file.ReadToEnd();
-                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
             }
             //foreach (var item in AllSheduleGroup.Shedule)
             //{
@@ -134,29 +141,30 @@ namespace Shedule_Editor
             //    string json = file.ReadToEnd();
             //    AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
             //}
-            foreach (var item in AllTeachers.Teachers)
-            {
-                foreach (var sub in item.Subjects.Items)
-                {
-                    bool r = false;
-                    foreach (var grp in AllGroup.Groups)
-                    {
-                        if (grp.name == sub.Group)
-                        {
-                            r = true;
-                        }
-                    }
-                    if (!r)
-                    {
-                        Group newGroup = new Group(sub.Group);
-                        AllGroup.Groups.Add(newGroup);
-                    }
-                }
-            }
-
+            //Какая то хрень
+            //foreach (var item in AllTeachers.Teachers)
+            //{
+            //    foreach (var sub in item.Subjects.Items)
+            //    {
+            //        bool r = false;
+            //        foreach (var grp in AllGroup.Groups)
+            //        {
+            //            if (grp.Name == sub.Group)
+            //            {
+            //                r = true;
+            //            }
+            //        }
+            //        if (!r)
+            //        {
+            //            Group newGroup = new Group(sub.Group);
+            //            AllGroup.Groups.Add(newGroup);
+            //        }
+            //    }
+            //}
+            //listViewGroup.Items.Clear();
             foreach (var item in AllGroup.Groups)
             {
-                ListViewItem group = new ListViewItem(item.name);
+                ListViewItem group = new ListViewItem(item.Name);
                 listViewGroup.Items.Add(group);
             }
             
@@ -183,10 +191,11 @@ namespace Shedule_Editor
         {
             try
             {
-                // Теперь это бесполезно??
+                // Теперь это бесполезно?? Как оказалось это заглушка, пока мы не научимся вытягивать данные
                 for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                 {
                     dataGridViewShedule.Rows[i].Cells[0].Value = "";
+                    dataGridViewShedule.Rows[i].Cells[1].Value = "";
                 }
                 //
                 listViewFile.Items.Clear();
@@ -197,10 +206,9 @@ namespace Shedule_Editor
                 ShowLoads();
                 DisciplineCheck();
             }
-            catch
-            {
+            catch(Exception)
+            { }
 
-            }
         }
 
         void Save()
@@ -225,17 +233,17 @@ namespace Shedule_Editor
                 List<string> audiences = new List<string>();
                 for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                 {
-                    if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
-                    {
-                        ls.Add("");
-                    }
-                    else
+                    //if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
+                    //{
+                    //    ls.Add("");
+                    //}
+                    //else
                         ls.Add(dataGridViewShedule.Rows[i].Cells[0].Value.ToString());
-                    if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
-                    {
-                        audiences.Add("");
-                    }
-                    else
+                    //if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
+                    //{
+                    //    audiences.Add("");
+                    //}
+                    //else
                         audiences.Add(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
 
                 }
@@ -250,12 +258,14 @@ namespace Shedule_Editor
                         item.ScheduleFieldsSubjects = ls;
                         item.ScheduleFieldsAudiences = audiences;
                         r = true;
+                        break;
                     }
                 }
 
                 if (!r)
-                {
+                {//Когда это случается?
                     AllSheduleGroup.Shedule.Add(sb);
+                    MessageBox.Show("qqqqq");
                 }
                 var curDir = Environment.CurrentDirectory;
                 var sg = JsonConvert.SerializeObject(AllSheduleGroup);
@@ -301,6 +311,7 @@ namespace Shedule_Editor
                 }
             }
         }
+        // функция отображения аудиторий в его датагриде
         void AudienceCheck()
         {
             for (int ind = 0, row = 0, col = 0; ind < audiences.Count; ind++)
@@ -310,8 +321,8 @@ namespace Shedule_Editor
                 {
                     for (int r = 0; r < dataGridViewShedule.Rows.Count && !f; r++)
                     {
-                        if (dataGridViewShedule[i, r].Value.ToString() == audiences[ind].ToString())
-                            f = true;
+                        //if (dataGridViewShedule[i, r].Value.ToString() == audiences[ind].ToString())
+                            //f = true;
                     }
                 }
                 if (!f) dataGridViewAudience[col, row].Value = audiences[ind];
@@ -347,15 +358,18 @@ namespace Shedule_Editor
             {
                 if (item.Name == ActiveGroup)
                 {
+                    //MessageBox.Show("FIND");
                     for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                     {
                         dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsSubjects[i];
                         dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsAudiences[i];
                     }
+                    break;
                 }
             }
+            
         }
-
+        
         private void listViewFile_MouseDown(object sender, MouseEventArgs e)
         {
             try
@@ -370,17 +384,15 @@ namespace Shedule_Editor
             }
         }
 
-
         private void dataGridViewShedule_SelectionChanged(object sender, EventArgs e)
         {
             this.dataGridViewShedule.ClearSelection();
         }
         private void listViewFile_DragDrop(object sender, DragEventArgs e)
         {
-            dataGridViewShedule[xDAD, yDAD].Value = "";
+            activeDiscipline = "";
             ShowLoads();
             DisciplineCheck();
-
         }
         private void listViewFile_DragEnter(object sender, DragEventArgs e)
         {
@@ -404,14 +416,16 @@ namespace Shedule_Editor
                 if (hittest.ColumnIndex != -1
                     && hittest.RowIndex != -1)
                 {
-                    if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 ||
+                    if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 && AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex & 4) ||
                         !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0)
+                        //(hittest.ColumnIndex != activeDisX || hittest.RowIndex != activeDisY))
+
                     {
-                        dataDAD = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
+                        activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
                         dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
-
+                        //dataGridViewShedule[activeDisX, activeDisY].Value = activeDiscipline;
                     }
-
+                    MessageBox.Show(AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex & 5).ToString());
                 }
 
                 ShowLoads();
@@ -419,7 +433,7 @@ namespace Shedule_Editor
                 Save();
             }
             catch
-            { }
+            { MessageBox.Show("ERROR"); }
         }
         private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
         {
@@ -435,21 +449,22 @@ namespace Shedule_Editor
                 DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
 
                 string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
+                activeDisX = info.ColumnIndex;
+                activeDisY = info.RowIndex;
                 if (!string.IsNullOrEmpty(s))
                 {
-                    xDAD = info.ColumnIndex;
-                    yDAD = info.RowIndex;
-
                     dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                    //dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = "";
-                    dataGridViewShedule[xDAD, yDAD].Value = dataDAD;
+                    dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = activeDiscipline;
+                    activeDiscipline = "";
+                    activeDisX = -1;
+                    activeDisY = -1;
                     listViewFile.DoDragDrop(s, DragDropEffects.Copy);
                     dataGridViewAudience.DoDragDrop(s, DragDropEffects.Copy);
+                    Save();
                 }
             }
             catch (Exception)
             { }
-
         }
 
         private void AudiencesForm_Click(object sender, EventArgs e)
@@ -529,6 +544,11 @@ namespace Shedule_Editor
             catch
             { }
 
+        }
+
+        private void AddLoadsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddLoads.GenerateNewLoads();
         }
 
 
