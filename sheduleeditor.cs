@@ -20,9 +20,7 @@ namespace Shedule_Editor
         int activeDisY = -1;
         int formwidth;
         int formheight;
-        string dataDAD = "";
-        int xDAD = 0;
-        int yDAD = 0;
+        
         List<int> audiences;// = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 
         public sheduleeditor()
@@ -433,7 +431,8 @@ namespace Shedule_Editor
                 Save();
             }
             catch
-            { MessageBox.Show("ERROR"); }
+            {// MessageBox.Show("ERROR");
+             }
         }
         private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
         {

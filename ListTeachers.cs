@@ -83,6 +83,7 @@ namespace Shedule_Editor
         {
             foreach (var subGroup in Shedule)
             {
+
                 for (int i = 0; i < 5; i++)
                 {
                     if (subGroup.ScheduleFieldsAudiences[numberOfLecture + i * 4] == number) return false;
