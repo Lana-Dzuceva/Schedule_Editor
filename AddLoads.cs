@@ -37,7 +37,7 @@ namespace Shedule_Editor
             var lists = book.Worksheets;
             foreach (var list in lists)
             {
-                string[] listName = list.Name.Split();
+                string[] listName = list.Name.Split(new string[] { " ", "  ", "   " }, StringSplitOptions.RemoveEmptyEntries);
                 if (!listName.Contains("Вакансия") && !listName.Contains("поручение"))
                 {
                     string lastName = listName[0];
@@ -49,9 +49,11 @@ namespace Shedule_Editor
                     while (!dir.Contains("Итого"))
                     {
                         dir = list.Cell("B" + row.ToString()).GetValue<string>();
+                        //dir = list.Cell("G" + row.ToString()).GetValue<string>();
                         string classF = list.Cell("J" + row.ToString()).GetValue<string>();
                         string[] group = list.Cell("G" + row.ToString()).GetValue<string>().Split(',');
-                        if ((dir.Contains("Математика") || dir.Contains("Информатика") || dir.Contains("Педагогическое")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
+                        if ((group[0].Contains("ПМ") || group[0].Contains("ИВТ") || group[0].Contains("ПОМИ") || group[0].Contains("МАТ")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
+                        // if ((dir.Contains("Математика") || dir.Contains("Информатика") || dir.Contains("Педагогическое")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
                         {
                             for (int i = 0; i < group.Length; i++)
                             {
@@ -64,7 +66,12 @@ namespace Shedule_Editor
                                 if (!ListGroups.ContainsGroups(listGroups, group[i]))
                                 {
                                     listGroups.Add(new Group(group[i]));
-                                    subgroupShedule.Add(new SubgroupSchedule(group[i], new List<string>(), new List<string>()));
+                                    var temp = new List<string>();
+                                    for (int r = 0; r < 20; r++)
+                                    {
+                                        temp.Add(""); 
+                                    }
+                                    subgroupShedule.Add(new SubgroupSchedule(group[i], temp, temp));
                                 }
                             }
                         }

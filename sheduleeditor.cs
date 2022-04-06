@@ -14,14 +14,15 @@ namespace Shedule_Editor
         ListTeachers AllTeachers;
         ListSubgroupShedule AllSheduleGroup;
         AudienceGroup AllAudiences;
+        ListGroups AllGroup;
         string ActiveGroup;
         string activeDiscipline = "";
         int activeDisX = -1;
         int activeDisY = -1;
         int formwidth;
         int formheight;
-        
-        List<int> audiences;// = { 500, 501, 502, 503, 600, 601, 602, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+        string curDir = Environment.CurrentDirectory;
+        List<int> audiences;
 
         public sheduleeditor()
         {
@@ -78,32 +79,17 @@ namespace Shedule_Editor
             dataGridViewAudience.ColumnCount = 10;
             dataGridViewAudience.BackgroundColor = Color.White;
 
-            //---------------------------------
+
             listViewAudienceDescription.Height = 350;
-            listViewAudienceDescription.Columns.Add("Номер");
-            listViewAudienceDescription.Columns.Add("Количество мест");
-            listViewAudienceDescription.Columns.Add("Меловая доска");
-            listViewAudienceDescription.Columns.Add("Маркерная доска");
-            listViewAudienceDescription.Columns.Add("Количество компьютеров");
-            listViewAudienceDescription.Columns.Add("Проектор");
-
-
-            for (int i = 0; i < listViewAudienceDescription.Columns.Count; i++)
+            foreach (var item in new string[] { "Номер", "Количество мест", "Меловая доска", "Маркерная доска", "Количество компьютеров", "Проектор" })
             {
-                listViewAudienceDescription.Columns[i].Width = 120;
+                listViewAudienceDescription.Columns.Add(item, 120);
             }
-
 
         }
 
-        // считываем данные с файлов и заполняем лист групп
-        private void FormShedule_Load(object sender, EventArgs e)
+        void updateWorkLoads()
         {
-            var curDir = Environment.CurrentDirectory;
-            var infFileShGroup = new FileInfo(curDir + @"\..\..\Files\subgroupShedule.json");
-            if (infFileShGroup.Length == 0)
-                AddLoads.GenerateNewLoads();
-
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
             {
                 string json = file.ReadToEnd();
@@ -116,12 +102,35 @@ namespace Shedule_Editor
                 AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(json);
             }
 
-            ListGroups AllGroup;
+
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\groups.json"))
             {
                 string json = file.ReadToEnd();
                 AllGroup = JsonConvert.DeserializeObject<ListGroups>(json);
             }
+            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\audienceGroup.json"))
+            {
+                string json = file.ReadToEnd();
+                AllAudiences = JsonConvert.DeserializeObject<AudienceGroup>(json);
+            }
+        }
+        void ShowListViewGroup()
+        {
+            foreach (var item in AllGroup.Groups)
+            {
+                ListViewItem group = new ListViewItem(item.Name);
+                listViewGroup.Items.Add(group);
+            }
+        }
+        // считываем данные с файлов и заполняем лист групп
+        private void FormShedule_Load(object sender, EventArgs e)
+        {
+
+            var infFileShGroup = new FileInfo(curDir + @"\..\..\Files\subgroupShedule.json");
+            if (infFileShGroup.Length == 0)
+                AddLoads.GenerateNewLoads();
+            updateWorkLoads();
+
             //foreach (var item in AllSheduleGroup.Shedule)
             //{
             //    item.ScheduleFieldsAudiences = new List<string>();
@@ -130,7 +139,7 @@ namespace Shedule_Editor
             //        item.ScheduleFieldsAudiences.Add("");
             //    }
             //}
-            ////Stas
+
             //var sg = JsonConvert.SerializeObject(AllSheduleGroup);
             //using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
             //    sw.WriteLine(sg);
@@ -160,22 +169,15 @@ namespace Shedule_Editor
             //    }
             //}
             //listViewGroup.Items.Clear();
-            foreach (var item in AllGroup.Groups)
-            {
-                ListViewItem group = new ListViewItem(item.Name);
-                listViewGroup.Items.Add(group);
-            }
-            
+
+
+            ShowListViewGroup();
 
             dataGridViewAudience.Hide();
             //listViewAudienceDescription.Items.Add("описание аудитории");
             listViewAudienceDescription.Hide();
 
-            using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\audienceGroup.json"))
-            {
-                string json = file.ReadToEnd();
-                AllAudiences = JsonConvert.DeserializeObject<AudienceGroup>(json);
-            }
+
             audiences = new List<int>();
             foreach (var item in AllAudiences.Audiences)
             {
@@ -189,7 +191,7 @@ namespace Shedule_Editor
         {
             try
             {
-                // Теперь это бесполезно?? Как оказалось это заглушка, пока мы не научимся вытягивать данные
+                // Теперь это бесполезно?? 
                 for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                 {
                     dataGridViewShedule.Rows[i].Cells[0].Value = "";
@@ -204,7 +206,7 @@ namespace Shedule_Editor
                 ShowLoads();
                 DisciplineCheck();
             }
-            catch(Exception)
+            catch (Exception)
             { }
 
         }
@@ -236,13 +238,13 @@ namespace Shedule_Editor
                     //    ls.Add("");
                     //}
                     //else
-                        ls.Add(dataGridViewShedule.Rows[i].Cells[0].Value.ToString());
+                    ls.Add(dataGridViewShedule.Rows[i].Cells[0].Value.ToString());
                     //if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
                     //{
                     //    audiences.Add("");
                     //}
                     //else
-                        audiences.Add(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
+                    audiences.Add(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
 
                 }
 
@@ -320,7 +322,7 @@ namespace Shedule_Editor
                     for (int r = 0; r < dataGridViewShedule.Rows.Count && !f; r++)
                     {
                         //if (dataGridViewShedule[i, r].Value.ToString() == audiences[ind].ToString())
-                            //f = true;
+                        //f = true;
                     }
                 }
                 if (!f) dataGridViewAudience[col, row].Value = audiences[ind];
@@ -365,9 +367,9 @@ namespace Shedule_Editor
                     break;
                 }
             }
-            
+
         }
-        
+
         private void listViewFile_MouseDown(object sender, MouseEventArgs e)
         {
             try
@@ -416,7 +418,7 @@ namespace Shedule_Editor
                 {
                     if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 && AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex % 4) ||
                         !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0 && AllSheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex % 4))
-                        //(hittest.ColumnIndex != activeDisX || hittest.RowIndex != activeDisY))
+                    //(hittest.ColumnIndex != activeDisX || hittest.RowIndex != activeDisY))
 
                     {
                         activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
@@ -432,7 +434,7 @@ namespace Shedule_Editor
             }
             catch
             {// MessageBox.Show("ERROR");
-             }
+            }
         }
         private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
         {
@@ -548,6 +550,9 @@ namespace Shedule_Editor
         private void AddLoadsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddLoads.GenerateNewLoads();
+            updateWorkLoads();
+            listViewGroup.Items.Clear();
+            ShowListViewGroup();
         }
 
 
