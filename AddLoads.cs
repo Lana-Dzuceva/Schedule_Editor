@@ -35,29 +35,29 @@ namespace Shedule_Editor
 
 
             var lists = book.Worksheets;
-            foreach (var item in lists)
+            foreach (var list in lists)
             {
-                string[] listName = item.Name.Split();
+                string[] listName = list.Name.Split();
                 if (!listName.Contains("Вакансия") && !listName.Contains("поручение"))
                 {
                     string lastName = listName[0];
                     string firstName = listName[1];
                     List<Subject> listSubjects = new List<Subject>();
                     Subject sb;
-                    int st = 13;
-                    string dir = item.Cell("B" + st.ToString()).GetValue<string>();
+                    int row = 13;
+                    string dir = list.Cell("B" + row.ToString()).GetValue<string>();
                     while (!dir.Contains("Итого"))
                     {
-                        dir = item.Cell("B" + st.ToString()).GetValue<string>();
-                        string classF = item.Cell("J" + st.ToString()).GetValue<string>();
-                        string[] group = item.Cell("G" + st.ToString()).GetValue<string>().Split(',');
-                        if ((dir.Contains("Математика") || dir.Contains("Информатика")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
+                        dir = list.Cell("B" + row.ToString()).GetValue<string>();
+                        string classF = list.Cell("J" + row.ToString()).GetValue<string>();
+                        string[] group = list.Cell("G" + row.ToString()).GetValue<string>().Split(',');
+                        if ((dir.Contains("Математика") || dir.Contains("Информатика") || dir.Contains("Педагогическое")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
                         {
                             for (int i = 0; i < group.Length; i++)
                             {
                                 if (classF.Contains("Практич")) classF = "Практика";
-                                sb = new Subject(item.Cell("E" + st.ToString()).GetValue<string>(),
-                                    item.Cell("O" + st.ToString()).GetValue<int>(),
+                                sb = new Subject(list.Cell("E" + row.ToString()).GetValue<string>(),
+                                    list.Cell("O" + row.ToString()).GetValue<int>(),
                                     group[i],
                                     classF);
                                 listSubjects.Add(sb);
@@ -68,7 +68,7 @@ namespace Shedule_Editor
                                 }
                             }
                         }
-                        st++;
+                        row++;
                     }
                     //MessageBox.Show(listSubjects.Count.ToString());
                     if (listSubjects.Count > 0)
