@@ -14,7 +14,10 @@ namespace Shedule_Editor
         {
             Teachers = teachers;
         }
-
+        public void Update(List<Teacher> teachers)
+        {
+            Teachers.AddRange(teachers);
+        }
         public static int ContainsTeacher(List<Teacher> lst, string lastName, string firstName)
         {
             for (int i = 0; i < lst.Count; i++)
@@ -44,13 +47,38 @@ namespace Shedule_Editor
             Groups = groups;
         }
 
-        public static bool ContainsGroups(List<Group> lst, string gr)
+        /// <summary>
+        /// подсказка к функции во время вызова
+        /// 
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <param name="gr"></param>
+        /// <returns></returns>
+        public static bool ContainsGroup(List<Group> lst, string gr)
         {
             for (int i = 0; i < lst.Count; i++)
             {
                 if (lst[i].Name == gr) return true;
             }
             return false;
+        }
+        public bool ContainsGroup1(string gr)
+        {
+            for (int i = 0; i < Groups.Count; i++)
+            {
+                if (Groups[i].Name == gr) return true;
+            }
+            return false;
+        }
+        public void Update(List<Group> groups)
+        {
+            foreach (Group group in groups)
+            {
+                if (!this.ContainsGroup1(group.Name)){
+                    Groups.Add(group);
+                }
+            }
+            //Groups.AddRange(groups);
         }
     }
 
@@ -95,6 +123,22 @@ namespace Shedule_Editor
                 if (subGroup.ScheduleFieldsSubjects[numberOfLecture].Contains(secName)) return false;
             }
             return true;
+        }
+
+        public bool ContainsSubGroup(string subgroupName)
+        {
+            foreach(var subgroup in Shedule)
+            {
+                if (subgroup.Name == subgroupName) return true;
+            }
+            return false;
+        }
+        public void Update(List<SubgroupSchedule> shedule)
+        {
+            foreach(var subgroup in shedule)
+            {
+                if(!this.ContainsSubGroup(subgroup.Name)) Shedule.Add(subgroup);
+            }
         }
     }
 }

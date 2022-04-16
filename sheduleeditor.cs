@@ -14,7 +14,7 @@ namespace Shedule_Editor
         ListTeachers AllTeachers;
         ListSubgroupShedule AllSheduleGroup;
         AudienceGroup AllAudiences;
-        ListGroups AllGroup;
+        ListGroups AllGroups;
         string ActiveGroup;
         string activeDiscipline = "";
         int activeDisX = -1;
@@ -106,7 +106,7 @@ namespace Shedule_Editor
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\groups.json"))
             {
                 string json = file.ReadToEnd();
-                AllGroup = JsonConvert.DeserializeObject<ListGroups>(json);
+                AllGroups = JsonConvert.DeserializeObject<ListGroups>(json);
             }
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\audienceGroup.json"))
             {
@@ -116,7 +116,7 @@ namespace Shedule_Editor
         }
         void ShowListViewGroup()
         {
-            foreach (var item in AllGroup.Groups)
+            foreach (var item in AllGroups.Groups)
             {
                 ListViewItem group = new ListViewItem(item.Name);
                 listViewGroup.Items.Add(group);
@@ -130,45 +130,6 @@ namespace Shedule_Editor
             if (infFileShGroup.Length == 0)
                 AddLoads.GenerateNewLoads();
             updateWorkLoads();
-
-            //foreach (var item in AllSheduleGroup.Shedule)
-            //{
-            //    item.ScheduleFieldsAudiences = new List<string>();
-            //    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
-            //    {
-            //        item.ScheduleFieldsAudiences.Add("");
-            //    }
-            //}
-
-            //var sg = JsonConvert.SerializeObject(AllSheduleGroup);
-            //using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
-            //    sw.WriteLine(sg);
-            //using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
-            //{
-            //    string json = file.ReadToEnd();
-            //    AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
-            //}
-            //Какая то хрень
-            //foreach (var item in AllTeachers.Teachers)
-            //{
-            //    foreach (var sub in item.Subjects.Items)
-            //    {
-            //        bool r = false;
-            //        foreach (var grp in AllGroup.Groups)
-            //        {
-            //            if (grp.Name == sub.Group)
-            //            {
-            //                r = true;
-            //            }
-            //        }
-            //        if (!r)
-            //        {
-            //            Group newGroup = new Group(sub.Group);
-            //            AllGroup.Groups.Add(newGroup);
-            //        }
-            //    }
-            //}
-            //listViewGroup.Items.Clear();
 
 
             ShowListViewGroup();
@@ -233,17 +194,8 @@ namespace Shedule_Editor
                 List<string> audiences = new List<string>();
                 for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                 {
-                    //if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
-                    //{
-                    //    ls.Add("");
-                    //}
-                    //else
                     ls.Add(dataGridViewShedule.Rows[i].Cells[0].Value.ToString());
-                    //if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
-                    //{
-                    //    audiences.Add("");
-                    //}
-                    //else
+                    
                     audiences.Add(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
 
                 }
@@ -285,10 +237,10 @@ namespace Shedule_Editor
         {
             try
             {
-                dataGridViewShedule.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "";
-                listViewFile.Items.Clear();
-                ShowLoads();
-                DisciplineCheck();
+                //dataGridViewShedule.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "";
+                //listViewFile.Items.Clear();
+                //ShowLoads();
+                //DisciplineCheck();
             }
             catch
             {
@@ -486,8 +438,6 @@ namespace Shedule_Editor
         {
             try
             {
-
-
 
                 DataGridView.HitTestInfo info = dataGridViewAudience.HitTest(e.X, e.Y);
                 string s = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
