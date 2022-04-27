@@ -16,7 +16,11 @@ namespace Shedule_Editor
         }
         public void Update(List<Teacher> teachers)
         {
-            Teachers.AddRange(teachers);
+            foreach (Teacher teacher in teachers)
+            {
+                if(ContainsTeacher(Teachers, teacher.LastName, teacher.FirstName) == -1) Teachers.Add(teacher);
+            }
+            //Teachers.AddRange(teachers);
         }
         public static int ContainsTeacher(List<Teacher> lst, string lastName, string firstName)
         {
@@ -74,7 +78,8 @@ namespace Shedule_Editor
         {
             foreach (Group group in groups)
             {
-                if (!this.ContainsGroup1(group.Name)){
+                if (!this.ContainsGroup1(group.Name))
+                {
                     Groups.Add(group);
                 }
             }
@@ -127,7 +132,7 @@ namespace Shedule_Editor
 
         public bool ContainsSubGroup(string subgroupName)
         {
-            foreach(var subgroup in Shedule)
+            foreach (var subgroup in Shedule)
             {
                 if (subgroup.Name == subgroupName) return true;
             }
@@ -135,9 +140,9 @@ namespace Shedule_Editor
         }
         public void Update(List<SubgroupSchedule> shedule)
         {
-            foreach(var subgroup in shedule)
+            foreach (var subgroup in shedule)
             {
-                if(!this.ContainsSubGroup(subgroup.Name)) Shedule.Add(subgroup);
+                if (!this.ContainsSubGroup(subgroup.Name)) Shedule.Add(subgroup);
             }
         }
     }

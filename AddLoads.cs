@@ -97,7 +97,8 @@ namespace Shedule_Editor
                             {
                                 foreach (var sbs in listSubjects)
                                 {
-                                    teachlst[indEl].Subjects.Items.Add(sbs);
+                                    if (!teachlst[indEl].Subjects.Items.Contains(sbs))
+                                        teachlst[indEl].Subjects.Items.Add(sbs);
                                 }
                             }
                             else
@@ -113,7 +114,7 @@ namespace Shedule_Editor
                     MessageBox.Show("Кривые у вас файлы");
                     //return;
                 }
-                }
+            }
 
             ListTeachers AllTeachers;
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\loads.json"))
@@ -133,7 +134,7 @@ namespace Shedule_Editor
                 AllGroups = JsonConvert.DeserializeObject<ListGroups>(json);
             }
             AllGroups.Update(listGroups);
-            
+
             using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\groups.json"))
                 sw.WriteLine(JsonConvert.SerializeObject(AllGroups));
             //-----------------------------------
@@ -146,11 +147,18 @@ namespace Shedule_Editor
                 AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
             }
             AllSheduleGroup.Update(subgroupShedule);
-            
+
             using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
                 sw.WriteLine(JsonConvert.SerializeObject(AllSheduleGroup));
-
+            //ClearTeachers();
             MessageBox.Show("Считывание завершено");
+        }
+        public static void ClearTeachers()
+        {
+            var curDir = Environment.CurrentDirectory;
+            ListTeachers AllTeachers = new ListTeachers(new List<Teacher>());
+            using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\loads.json"))
+                sw.WriteLine(JsonConvert.SerializeObject(AllTeachers));
         }
     }
 }

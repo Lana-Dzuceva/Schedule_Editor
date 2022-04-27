@@ -116,11 +116,18 @@ namespace Shedule_Editor
         }
         void ShowListViewGroup()
         {
+            listViewGroup.Groups.Add(new ListViewGroup("Lana"));
+            listViewGroup.Groups[0].Items.Add(new ListViewItem("Stas"));
+            listViewGroup.Groups[0].Header = "hmm";
+            listViewGroup.Groups.Add(new ListViewGroup("Lana2"));
+            listViewGroup.Groups[1].Items.Add(new ListViewItem("NotStas"));
             foreach (var item in AllGroups.Groups)
             {
                 ListViewItem group = new ListViewItem(item.Name);
                 listViewGroup.Items.Add(group);
+                listViewGroup.Groups[1].Items.Add(group);
             }
+
         }
         // считываем данные с файлов и заполняем лист групп
         private void FormShedule_Load(object sender, EventArgs e)
