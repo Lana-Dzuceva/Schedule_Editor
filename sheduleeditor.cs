@@ -131,45 +131,6 @@ namespace Shedule_Editor
                 AddLoads.GenerateNewLoads();
             updateWorkLoads();
 
-            //foreach (var item in AllSheduleGroup.Shedule)
-            //{
-            //    item.ScheduleFieldsAudiences = new List<string>();
-            //    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
-            //    {
-            //        item.ScheduleFieldsAudiences.Add("");
-            //    }
-            //}
-
-            //var sg = JsonConvert.SerializeObject(AllSheduleGroup);
-            //using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
-            //    sw.WriteLine(sg);
-            //using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
-            //{
-            //    string json = file.ReadToEnd();
-            //    AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
-            //}
-            //Какая то хрень
-            //foreach (var item in AllTeachers.Teachers)
-            //{
-            //    foreach (var sub in item.Subjects.Items)
-            //    {
-            //        bool r = false;
-            //        foreach (var grp in AllGroup.Groups)
-            //        {
-            //            if (grp.Name == sub.Group)
-            //            {
-            //                r = true;
-            //            }
-            //        }
-            //        if (!r)
-            //        {
-            //            Group newGroup = new Group(sub.Group);
-            //            AllGroup.Groups.Add(newGroup);
-            //        }
-            //    }
-            //}
-            //listViewGroup.Items.Clear();
-
 
             ShowListViewGroup();
 
@@ -213,37 +174,16 @@ namespace Shedule_Editor
 
         void Save()
         {
-            //______________область экспериментов с аудиториями_________________
-            //AudienceGroup ag = new AudienceGroup();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    Audience audience = new Audience(600 + i, 15, i % 2 == 0, false, 15 + i % 4, true);
-            //    ag.Add(audience);
-            //}
-            //using (StreamWriter sw = new StreamWriter("audienceGroup.json"))
-            //    sw.WriteLine(JsonConvert.SerializeObject(ag));
-            //MessageBox.Show(audience.ToString());
-
-            //________________________________________________________________
-
-
+            
             if (ActiveGroup != null)
             {
                 List<string> ls = new List<string>();
                 List<string> audiences = new List<string>();
                 for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                 {
-                    //if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
-                    //{
-                    //    ls.Add("");
-                    //}
-                    //else
+                    
                     ls.Add(dataGridViewShedule.Rows[i].Cells[0].Value.ToString());
-                    //if (dataGridViewShedule.Rows[i].Cells[0].Value == null)
-                    //{
-                    //    audiences.Add("");
-                    //}
-                    //else
+                   
                     audiences.Add(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
 
                 }
@@ -419,13 +359,10 @@ namespace Shedule_Editor
                     if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 && AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex % 4) ||
                         !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0 && AllSheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex % 4))
                     //(hittest.ColumnIndex != activeDisX || hittest.RowIndex != activeDisY))
-
                     {
                         activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
                         dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
-                        //dataGridViewShedule[activeDisX, activeDisY].Value = activeDiscipline;
                     }
-                    MessageBox.Show(AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex & 5).ToString());
                 }
 
                 ShowLoads();

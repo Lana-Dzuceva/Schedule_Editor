@@ -98,6 +98,7 @@
     <None Include="Files\groups.json" />
     <None Include="Files\loads.json" />
     <None Include="Files\Nagruzki-07-06.xlsx" />
+    <None Include="Files\NAGRUZKI_KAFEDRY.xlsm" />
     <None Include="Files\newloads.json" />
     <None Include="Files\subgroupShedule.json" />
     <None Include="Files\___Нагрузки_КафПМ_2021-22.xlsm" />
