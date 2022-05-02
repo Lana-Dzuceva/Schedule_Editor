@@ -131,7 +131,6 @@ namespace Shedule_Editor
                 ListViewItem group = new ListViewItem(item.Name);
                 listViewGroup.Items.Add(group);
                 listViewGroup.Groups[groupind].Items.Add(group);
-                listViewGroup.Font = new Font(FontFamily.GenericSansSerif, 12, );
             }
 
         }
