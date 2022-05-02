@@ -62,7 +62,9 @@ namespace Shedule_Editor
             listViewFile.Columns[1].Width = 150;
             listViewFile.Columns[2].Width = 150;
             listViewFile.Columns[3].Width = 150;
-            listViewFile.Font = new System.Drawing.Font(FontFamily.GenericSansSerif, 12);
+            listViewFile.Font = new Font(FontFamily.GenericSansSerif, 12);
+
+            //listViewGroup.Font = new System.Drawing.Font(FontFamily.GenericSansSerif, 12);
 
             //убираем мерцание и свойства выделения
             listViewFile.HoverSelection = false;
@@ -116,16 +118,20 @@ namespace Shedule_Editor
         }
         void ShowListViewGroup()
         {
-            listViewGroup.Groups.Add(new ListViewGroup("Lana"));
-            listViewGroup.Groups[0].Items.Add(new ListViewItem("Stas"));
-            listViewGroup.Groups[0].Header = "hmm";
-            listViewGroup.Groups.Add(new ListViewGroup("Lana2"));
-            listViewGroup.Groups[1].Items.Add(new ListViewItem("NotStas"));
+            int year = DateTime.Now.Year-2000;
+            listViewGroup.View = View.Tile;
+            listViewGroup.Groups.Add(new ListViewGroup("1 курс"));
+            listViewGroup.Groups.Add(new ListViewGroup("2 курс"));
+            listViewGroup.Groups.Add(new ListViewGroup("3 курс"));
+            listViewGroup.Groups.Add(new ListViewGroup("4 курс"));
+            listViewGroup.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             foreach (var item in AllGroups.Groups)
             {
+                int groupind = year - 1 - Convert.ToInt32(item.Name.Split('-')[1]);
                 ListViewItem group = new ListViewItem(item.Name);
                 listViewGroup.Items.Add(group);
-                listViewGroup.Groups[1].Items.Add(group);
+                listViewGroup.Groups[groupind].Items.Add(group);
+                listViewGroup.Font = new Font(FontFamily.GenericSansSerif, 12, );
             }
 
         }
@@ -225,21 +231,6 @@ namespace Shedule_Editor
         private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Save();
-        }
-
-        private void dataGridViewShedule_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                //dataGridViewShedule.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "";
-                //listViewFile.Items.Clear();
-                //ShowLoads();
-                //DisciplineCheck();
-            }
-            catch
-            {
-
-            }
         }
 
         private void DisciplineCheck()

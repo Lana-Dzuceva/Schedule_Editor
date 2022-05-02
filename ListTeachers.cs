@@ -50,7 +50,6 @@ namespace Shedule_Editor
         {
             Groups = groups;
         }
-
         /// <summary>
         /// подсказка к функции во время вызова
         /// 
