@@ -135,7 +135,7 @@ namespace Shedule_Editor
             // 
             this.SaveFileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.SaveFileToolStripMenuItem.Name = "SaveFileToolStripMenuItem";
-            this.SaveFileToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
+            this.SaveFileToolStripMenuItem.Size = new System.Drawing.Size(119, 24);
             this.SaveFileToolStripMenuItem.Text = "Сохранить в файл";
             this.SaveFileToolStripMenuItem.Click += new System.EventHandler(this.SaveFileToolStripMenuItem_Click);
             // 
@@ -214,6 +214,7 @@ namespace Shedule_Editor
             this.listViewGroup.Name = "listViewGroup";
             this.listViewGroup.Size = new System.Drawing.Size(364, 272);
             this.listViewGroup.TabIndex = 10;
+            this.listViewGroup.TileSize = new System.Drawing.Size(350, 40);
             this.listViewGroup.UseCompatibleStateImageBehavior = false;
             this.listViewGroup.View = System.Windows.Forms.View.Tile;
             this.listViewGroup.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewGroup_MouseClick);

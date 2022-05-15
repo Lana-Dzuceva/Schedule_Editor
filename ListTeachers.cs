@@ -18,7 +18,7 @@ namespace Shedule_Editor
         {
             foreach (Teacher teacher in teachers)
             {
-                if(ContainsTeacher(Teachers, teacher.LastName, teacher.FirstName) == -1) Teachers.Add(teacher);
+                if (ContainsTeacher(Teachers, teacher.LastName, teacher.FirstName) == -1) Teachers.Add(teacher);
             }
             //Teachers.AddRange(teachers);
         }
@@ -129,6 +129,7 @@ namespace Shedule_Editor
             return true;
         }
 
+       
         public bool ContainsSubGroup(string subgroupName)
         {
             foreach (var subgroup in Shedule)

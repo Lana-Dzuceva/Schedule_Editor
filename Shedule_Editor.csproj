@@ -93,6 +93,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Files\audienceGroup.json" />
     <None Include="Files\B010302-21-1-ПМ_1.plx.xls" />
     <None Include="Files\groups.json" />
     <None Include="Files\loads.json" />

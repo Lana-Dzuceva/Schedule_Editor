@@ -160,5 +160,44 @@ namespace Shedule_Editor
             using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\loads.json"))
                 sw.WriteLine(JsonConvert.SerializeObject(AllTeachers));
         }
+        public static void LoadStudyHours()
+        {
+            var curDir = Environment.CurrentDirectory;
+            var xlPath = string.Empty;
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = curDir + @"\..\..";
+                openFileDialog.Filter = "(*.xls)|*.xls*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.Title = "Выберите файл с данными о количестве учебных недель";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    xlPath = openFileDialog.FileName;
+                }
+            }
+            if (xlPath == string.Empty)
+            {
+                MessageBox.Show("Считывание не было завершено");
+                return;
+            }
+
+
+            XLWorkbook book = new XLWorkbook(xlPath); 
+            var lists = book.Worksheets;
+            foreach (var list in lists)
+            {
+                if(list.Name == "График")
+                {
+                    MessageBox.Show(list.Cell("A91").ToString());
+                }
+            }
+            MessageBox.Show("Всё");
+            //using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\loads.json"))
+            //{
+            //    string json = file.ReadToEnd();
+            //    AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(json);
+            //}
+        }
     }
 }

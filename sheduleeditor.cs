@@ -23,7 +23,8 @@ namespace Shedule_Editor
         int formheight;
         string curDir = Environment.CurrentDirectory;
         List<int> audiences;
-
+        int CountOfWeeksInYear = 39;
+        int CountOfWeeksIn1Semester = 18;
         public sheduleeditor()
         {
             InitializeComponent();
@@ -87,7 +88,6 @@ namespace Shedule_Editor
             {
                 listViewAudienceDescription.Columns.Add(item, 120);
             }
-
         }
 
         void updateWorkLoads()
@@ -118,7 +118,7 @@ namespace Shedule_Editor
         }
         void ShowListViewGroup()
         {
-            int year = DateTime.Now.Year-2000;
+            int year = DateTime.Now.Year - 2000;
             listViewGroup.View = View.Tile;
             listViewGroup.Groups.Add(new ListViewGroup("1 курс"));
             listViewGroup.Groups.Add(new ListViewGroup("2 курс"));
@@ -177,7 +177,7 @@ namespace Shedule_Editor
                 dataGridViewShedule.Columns[0].HeaderText = ActiveGroup;
                 ShowShedule();
                 ShowLoads();
-                DisciplineCheck();
+                //DisciplineCheck();
             }
             catch (Exception)
             { }
@@ -186,7 +186,7 @@ namespace Shedule_Editor
 
         void Save()
         {
-            
+
             if (ActiveGroup != null)
             {
                 List<string> ls = new List<string>();
@@ -194,7 +194,7 @@ namespace Shedule_Editor
                 for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                 {
                     ls.Add(dataGridViewShedule.Rows[i].Cells[0].Value.ToString());
-                    
+
                     audiences.Add(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
 
                 }
@@ -224,7 +224,7 @@ namespace Shedule_Editor
                 using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
                     sw.WriteLine(sg);
 
-                DisciplineCheck();
+                //DisciplineCheck();
             }
         }
         private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -239,7 +239,7 @@ namespace Shedule_Editor
                 string s = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
                 for (int j = 0; j < listViewFile.Items.Count; j++)
                 {
-                    string t = listViewFile.Items[j].SubItems[0].Text + " " + listViewFile.Items[j].SubItems[1].Text + " " + listViewFile.Items[j].SubItems[2].Text;
+                    string t = ListViewItemToString(listViewFile.Items[j]);
                     if (s == t)
                     {
                         listViewFile.Items.RemoveAt(j);
@@ -305,13 +305,16 @@ namespace Shedule_Editor
             }
 
         }
-
+        private string ListViewItemToString(ListViewItem item)
+        {
+            return $"{item.SubItems[0].Text} {item.SubItems[1].Text} {item.SubItems[2].Text}";
+        }
         private void listViewFile_MouseDown(object sender, MouseEventArgs e)
         {
             try
             {
                 int indexSource = listViewFile.Items.IndexOf(listViewFile.GetItemAt(e.X, e.Y));
-                string s = listViewFile.Items[indexSource].SubItems[0].Text + " " + listViewFile.Items[indexSource].SubItems[1].Text + " " + listViewFile.Items[indexSource].SubItems[2].Text;
+                string s = ListViewItemToString(listViewFile.Items[indexSource]);
                 listViewFile.DoDragDrop(s, DragDropEffects.Copy);
             }
             catch
@@ -328,7 +331,7 @@ namespace Shedule_Editor
         {
             activeDiscipline = "";
             ShowLoads();
-            DisciplineCheck();
+            //DisciplineCheck();
         }
         private void listViewFile_DragEnter(object sender, DragEventArgs e)
         {
@@ -338,7 +341,17 @@ namespace Shedule_Editor
             }
         }
 
-
+        public bool HasLectorFreeHours(string lector)
+        {
+            foreach (ListViewItem item in listViewFile.Items)
+            {
+                if (ListViewItemToString(item) == lector)
+                {
+                    return Convert.ToInt32(item.SubItems[3].Text) >= CountOfWeeksIn1Semester;//Тут
+                }
+            }
+            return false;
+        }
         private void dataGridViewShedule_DragDrop(object sender, DragEventArgs e)
         {
             try
@@ -347,14 +360,13 @@ namespace Shedule_Editor
                 Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
 
                 DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 24);
-
-
-                if (hittest.ColumnIndex != -1
-                    && hittest.RowIndex != -1)
+                //MessageBox.Show(HasLectorFreeHours(cellvalue).ToString());
+                if (hittest.RowIndex != -1)
                 {
-                    if (int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1 && AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex % 4) ||
-                        !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0 && AllSheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex % 4))
-                    //(hittest.ColumnIndex != activeDisX || hittest.RowIndex != activeDisY))
+                    bool IsAudience = int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1;
+                    bool IsLector = !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0;
+                    if (IsAudience && AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex) ||
+                        IsLector && AllSheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex) && HasLectorFreeHours(cellvalue))
                     {
                         activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
                         dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
@@ -362,7 +374,7 @@ namespace Shedule_Editor
                 }
 
                 ShowLoads();
-                DisciplineCheck();
+                //DisciplineCheck();
                 Save();
             }
             catch
