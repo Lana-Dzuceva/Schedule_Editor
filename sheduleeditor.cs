@@ -229,7 +229,7 @@ namespace Shedule_Editor
         }
         private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Save();
+            SaveSchedule.Save();
         }
 
         private void DisciplineCheck()
