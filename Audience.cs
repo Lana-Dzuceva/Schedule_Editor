@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shedule_Editor
+namespace Schedule_Editor
 {
     class Audience
     {

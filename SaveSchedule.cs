@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using ClosedXML.Excel;
 using Newtonsoft.Json;
 
-namespace Shedule_Editor
+namespace Schedule_Editor
 {
     static class SaveSchedule
     {
@@ -37,11 +37,11 @@ namespace Shedule_Editor
             }
             MessageBox.Show(xlPath);
             XLWorkbook workbook = new XLWorkbook();
-            ListSubgroupShedule AllSheduleGroup;
+            ListSubgroupSchedule AllSheduleGroup;
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
             {
                 string json = file.ReadToEnd();
-                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
+                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupSchedule>(json);
             }
             foreach (var group in AllSheduleGroup.Shedule)
             {
@@ -49,21 +49,14 @@ namespace Shedule_Editor
                 for (int i = 0; i < group.ScheduleFieldsSubjects.Count; i++)
                 {
                     //workbook.Worksheet(group.Name).
-                    workbook.Worksheet(group.Name).Cell("С" + (i + 1).ToString()).Value = group.ScheduleFieldsSubjects[i];
-                    //workbook.Worksheet(group.Name).Cell("A"+ i.ToString()).Value = //group.ScheduleFieldsSubjects[i];
+                    string text = group.ScheduleFieldsSubjects[i];
+                    //MessageBox.Show((text == string.Empty).ToString());
+                    //MessageBox.Show("С" + (i + 1).ToString());
+                    workbook.Worksheet(group.Name).Cell("C" + (i + 1).ToString()).Value = "1";
+                    MessageBox.Show(("С" == "C").ToString());
                 }
             }
-            //for (int i = 0; i < AllSheduleGroup.Shedule.Count; i++)
-            //{
-            //    //MessageBox.Show(AllSheduleGroup.Shedule[i].Name);
-            //    workbook.AddWorksheet(AllSheduleGroup.Shedule[i].Name);
-
-            //}
-            //workbook.AddWorksheet("Расписание");
-            //workbook.Worksheets.Worksheet("Расписание").Cell("A1").Value = "Расписание";
-
-            //workbook.AddWorksheet("Расписание2");
-            //workbook.Worksheets.Worksheet(1).Cell("A1").Value = "Расписание2";
+            
             workbook.SaveAs(xlPath);
         }
     }

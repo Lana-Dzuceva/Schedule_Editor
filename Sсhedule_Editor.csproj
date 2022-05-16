@@ -73,18 +73,18 @@
     <Compile Include="AddLoads.cs" />
     <Compile Include="Audience.cs" />
     <Compile Include="SaveSchedule.cs" />
-    <Compile Include="sheduleeditor.cs">
+    <Compile Include="ScheduleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="sheduleeditor.Designer.cs">
-      <DependentUpon>sheduleeditor.cs</DependentUpon>
+    <Compile Include="ScheduleEditor.Designer.cs">
+      <DependentUpon>ScheduleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Teacher.cs" />
     <Compile Include="ListTeachers.cs" />
-    <EmbeddedResource Include="sheduleeditor.resx">
-      <DependentUpon>sheduleeditor.cs</DependentUpon>
+    <EmbeddedResource Include="ScheduleEditor.resx">
+      <DependentUpon>ScheduleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

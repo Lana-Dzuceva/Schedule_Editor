@@ -1,7 +1,7 @@
 ﻿
-namespace Shedule_Editor
+namespace Schedule_Editor
 {
-    partial class sheduleeditor
+    partial class ScheduleEditor
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -33,7 +33,7 @@ namespace Shedule_Editor
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(sheduleeditor));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScheduleEditor));
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.dataGridViewShedule = new System.Windows.Forms.DataGridView();
             this.imageListLarge = new System.Windows.Forms.ImageList(this.components);
@@ -264,7 +264,7 @@ namespace Shedule_Editor
             this.listViewAudienceDescription.UseCompatibleStateImageBehavior = false;
             this.listViewAudienceDescription.View = System.Windows.Forms.View.Details;
             // 
-            // sheduleeditor
+            // ScheduleEditor
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -281,7 +281,7 @@ namespace Shedule_Editor
             this.Controls.Add(this.dataGridViewShedule);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "sheduleeditor";
+            this.Name = "ScheduleEditor";
             this.Text = "SheduleEditor";
             this.Load += new System.EventHandler(this.FormShedule_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShedule)).EndInit();

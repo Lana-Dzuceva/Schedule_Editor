@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 
-namespace Shedule_Editor.Properties
+namespace Schedule_Editor.Properties
 {
     /// <summary>
     ///   Класс ресурсов со строгим типом для поиска локализованных строк и пр.

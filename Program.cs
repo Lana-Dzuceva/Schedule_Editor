@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Shedule_Editor
+namespace Schedule_Editor
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace Shedule_Editor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new sheduleeditor());
+            Application.Run(new ScheduleEditor());
         }
     }
 }

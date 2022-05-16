@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shedule_Editor
+namespace Schedule_Editor
 {
     class ListTeachers
     {
@@ -103,11 +103,11 @@ namespace Shedule_Editor
 
     }
 
-    class ListSubgroupShedule
+    class ListSubgroupSchedule
     {
         public List<SubgroupSchedule> Shedule { get; set; }
 
-        public ListSubgroupShedule(List<SubgroupSchedule> shedule)
+        public ListSubgroupSchedule(List<SubgroupSchedule> shedule)
         {
             Shedule = shedule;
         }

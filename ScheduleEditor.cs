@@ -7,12 +7,12 @@ using System.Reflection;
 using System.Windows.Forms;
 //using System.Windows.Media;
 
-namespace Shedule_Editor
+namespace Schedule_Editor
 {
-    public partial class sheduleeditor : Form
+    public partial class ScheduleEditor : Form
     {
         ListTeachers AllTeachers;
-        ListSubgroupShedule AllSheduleGroup;
+        ListSubgroupSchedule AllScheduleGroup;
         AudienceGroup AllAudiences;
         ListGroups AllGroups;
         string ActiveGroup;
@@ -25,7 +25,7 @@ namespace Shedule_Editor
         List<int> audiences;
         int CountOfWeeksInYear = 39;
         int CountOfWeeksIn1Semester = 18;
-        public sheduleeditor()
+        public ScheduleEditor()
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
@@ -95,7 +95,7 @@ namespace Shedule_Editor
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
             {
                 string json = file.ReadToEnd();
-                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
+                AllScheduleGroup = JsonConvert.DeserializeObject<ListSubgroupSchedule>(json);
             }
 
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\loads.json"))
@@ -202,7 +202,7 @@ namespace Shedule_Editor
                 SubgroupSchedule sb = new SubgroupSchedule(ActiveGroup, ls, audiences);
 
                 bool r = false;
-                foreach (var item in AllSheduleGroup.Shedule)
+                foreach (var item in AllScheduleGroup.Shedule)
                 {
                     if (item.Name == ActiveGroup)
                     {
@@ -215,11 +215,11 @@ namespace Shedule_Editor
 
                 if (!r)
                 {//Когда это случается?
-                    AllSheduleGroup.Shedule.Add(sb);
+                    AllScheduleGroup.Shedule.Add(sb);
                     MessageBox.Show("qqqqq");
                 }
                 var curDir = Environment.CurrentDirectory;
-                var sg = JsonConvert.SerializeObject(AllSheduleGroup);
+                var sg = JsonConvert.SerializeObject(AllScheduleGroup);
                 //Console.WriteLine(sg);
                 using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
                     sw.WriteLine(sg);
@@ -290,7 +290,7 @@ namespace Shedule_Editor
         }
         private void ShowShedule()
         {
-            foreach (var item in AllSheduleGroup.Shedule)
+            foreach (var item in AllScheduleGroup.Shedule)
             {
                 if (item.Name == ActiveGroup)
                 {
@@ -365,8 +365,8 @@ namespace Shedule_Editor
                 {
                     bool IsAudience = int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1;
                     bool IsLector = !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0;
-                    if (IsAudience && AllSheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex) ||
-                        IsLector && AllSheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex) && HasLectorFreeHours(cellvalue))
+                    if (IsAudience && AllScheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex) ||
+                        IsLector && AllScheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex) && HasLectorFreeHours(cellvalue))
                     {
                         activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
                         dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;

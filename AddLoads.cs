@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-namespace Shedule_Editor
+namespace Schedule_Editor
 {
     class AddLoads
     {
@@ -140,11 +140,11 @@ namespace Shedule_Editor
             //-----------------------------------
 
 
-            ListSubgroupShedule AllSheduleGroup;
+            ListSubgroupSchedule AllSheduleGroup;
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
             {
                 string json = file.ReadToEnd();
-                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupShedule>(json);
+                AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupSchedule>(json);
             }
             AllSheduleGroup.Update(subgroupShedule);
 
