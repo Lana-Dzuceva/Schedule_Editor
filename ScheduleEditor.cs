@@ -17,8 +17,6 @@ namespace Schedule_Editor
         ListGroups AllGroups;
         string ActiveGroup;
         string activeDiscipline = "";
-        int activeDisX = -1;
-        int activeDisY = -1;
         int formwidth;
         int formheight;
         string curDir = Environment.CurrentDirectory;
@@ -227,8 +225,30 @@ namespace Schedule_Editor
                 //DisciplineCheck();
             }
         }
+        public string ShowDialog1(string text, string caption)
+        {//тут
+            Form prompt = new Form()
+            {
+                Width = 500,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
+            TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
+            Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+
+            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+        }
         private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!AllScheduleGroup.IsScheduleFilled()) ShowDialog1("Lana", "Stas");
             SaveSchedule.Save();
         }
 
@@ -378,7 +398,7 @@ namespace Schedule_Editor
                 Save();
             }
             catch
-            {// MessageBox.Show("ERROR");
+            {
             }
         }
         private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
@@ -395,15 +415,12 @@ namespace Schedule_Editor
                 DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
 
                 string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
-                activeDisX = info.ColumnIndex;
-                activeDisY = info.RowIndex;
+           
                 if (!string.IsNullOrEmpty(s))
                 {
                     dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
                     dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = activeDiscipline;
                     activeDiscipline = "";
-                    activeDisX = -1;
-                    activeDisY = -1;
                     listViewFile.DoDragDrop(s, DragDropEffects.Copy);
                     dataGridViewAudience.DoDragDrop(s, DragDropEffects.Copy);
                     Save();

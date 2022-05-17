@@ -145,5 +145,16 @@ namespace Schedule_Editor
                 if (!this.ContainsSubGroup(subgroup.Name)) Shedule.Add(subgroup);
             }
         }
+        public bool IsScheduleFilled()
+        {
+            foreach (var group in Shedule)
+            {
+                for (int i = 0; i < group.ScheduleFieldsSubjects.Count; i++)
+                {
+                    if (string.IsNullOrEmpty(group.ScheduleFieldsSubjects[i]) || string.IsNullOrEmpty(group.ScheduleFieldsAudiences[i])) return false;
+                }
+            }
+            return true;
+        }
     }
 }

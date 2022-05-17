@@ -20,7 +20,7 @@ namespace Schedule_Editor
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.InitialDirectory = curDir + @"\..\..";
-                //saveFileDialog.Filter = "(*.xls)|*.xls*";
+                //saveFileDialog.Filter = "(*.xlsx)|*.xlsx | (*.xlsm)|*.xlsm";
                 saveFileDialog.DefaultExt = ".xlsx";
                 saveFileDialog.FilterIndex = 1;
                 saveFileDialog.RestoreDirectory = true;
@@ -49,11 +49,12 @@ namespace Schedule_Editor
                 for (int i = 0; i < group.ScheduleFieldsSubjects.Count; i++)
                 {
                     //workbook.Worksheet(group.Name).
-                    string text = group.ScheduleFieldsSubjects[i];
-                    //MessageBox.Show((text == string.Empty).ToString());
-                    //MessageBox.Show("С" + (i + 1).ToString());
-                    workbook.Worksheet(group.Name).Cell("C" + (i + 1).ToString()).Value = "1";
-                    MessageBox.Show(("С" == "C").ToString());
+                    string lection = group.ScheduleFieldsSubjects[i];
+                    string audience = group.ScheduleFieldsAudiences[i];
+                    workbook.Worksheet(group.Name).Cell("B" + (i + 1).ToString()).Value = $"{i + 1} пара";
+                    workbook.Worksheet(group.Name).Column("C").Width = 100;
+                    workbook.Worksheet(group.Name).Cell("C" + (i + 1).ToString()).Value = $"{lection}, ауд.{audience}";
+                    //MessageBox.Show(("С" == "C").ToString());
                 }
             }
             
