@@ -45,7 +45,7 @@ namespace Schedule_Editor
             this.AddLoadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter3 = new System.Windows.Forms.Splitter();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.listViewFile = new System.Windows.Forms.ListView();
+            this.listViewSubjects = new System.Windows.Forms.ListView();
             this.listViewGroup = new System.Windows.Forms.ListView();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.dataGridViewAudience = new System.Windows.Forms.DataGridView();
@@ -185,24 +185,24 @@ namespace Schedule_Editor
             // 
             // listViewFile
             // 
-            this.listViewFile.AllowDrop = true;
-            this.listViewFile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewFile.FullRowSelect = true;
-            this.listViewFile.HideSelection = false;
-            this.listViewFile.HoverSelection = true;
-            this.listViewFile.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            this.listViewSubjects.AllowDrop = true;
+            this.listViewSubjects.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewSubjects.FullRowSelect = true;
+            this.listViewSubjects.HideSelection = false;
+            this.listViewSubjects.HoverSelection = true;
+            this.listViewSubjects.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
-            this.listViewFile.Location = new System.Drawing.Point(477, 24);
-            this.listViewFile.MultiSelect = false;
-            this.listViewFile.Name = "listViewFile";
-            this.listViewFile.ShowGroups = false;
-            this.listViewFile.Size = new System.Drawing.Size(364, 421);
-            this.listViewFile.TabIndex = 8;
-            this.listViewFile.UseCompatibleStateImageBehavior = false;
-            this.listViewFile.View = System.Windows.Forms.View.Details;
-            this.listViewFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.listViewFile_DragDrop);
-            this.listViewFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.listViewFile_DragEnter);
-            this.listViewFile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewFile_MouseDown);
+            this.listViewSubjects.Location = new System.Drawing.Point(477, 24);
+            this.listViewSubjects.MultiSelect = false;
+            this.listViewSubjects.Name = "listViewFile";
+            this.listViewSubjects.ShowGroups = false;
+            this.listViewSubjects.Size = new System.Drawing.Size(364, 421);
+            this.listViewSubjects.TabIndex = 8;
+            this.listViewSubjects.UseCompatibleStateImageBehavior = false;
+            this.listViewSubjects.View = System.Windows.Forms.View.Details;
+            this.listViewSubjects.DragDrop += new System.Windows.Forms.DragEventHandler(this.listViewSubjects_DragDrop);
+            this.listViewSubjects.DragEnter += new System.Windows.Forms.DragEventHandler(this.listViewSubjects_DragEnter);
+            this.listViewSubjects.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewSubjects_MouseDown);
             // 
             // listViewGroup
             // 
@@ -275,7 +275,7 @@ namespace Schedule_Editor
             this.Controls.Add(this.dataGridViewAudience);
             this.Controls.Add(this.splitter2);
             this.Controls.Add(this.listViewGroup);
-            this.Controls.Add(this.listViewFile);
+            this.Controls.Add(this.listViewSubjects);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.splitter3);
             this.Controls.Add(this.dataGridViewShedule);
@@ -304,7 +304,7 @@ namespace Schedule_Editor
         private System.Windows.Forms.ToolStripMenuItem SaveFileToolStripMenuItem;
         private System.Windows.Forms.ListView listViewGroup;
         private System.Windows.Forms.Splitter splitter2;
-        public System.Windows.Forms.ListView listViewFile;
+        public System.Windows.Forms.ListView listViewSubjects;
         private System.Windows.Forms.ToolStripMenuItem AudiencesForm;
         private System.Windows.Forms.ToolStripMenuItem ShedulesForm;
         private System.Windows.Forms.DataGridView dataGridViewAudience;

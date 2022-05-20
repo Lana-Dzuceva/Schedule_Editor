@@ -17,12 +17,9 @@ namespace Schedule_Editor
         ListGroups AllGroups;
         string ActiveGroup;
         string activeDiscipline = "";
-        int activeDisX = -1;
-        int activeDisY = -1;
         int formwidth;
         int formheight;
         string curDir = Environment.CurrentDirectory;
-        List<int> audiences;
         int CountOfWeeksInYear = 39;
         int CountOfWeeksIn1Semester = 18;
         public ScheduleEditor()
@@ -37,10 +34,10 @@ namespace Schedule_Editor
             dataGridViewShedule.ColumnCount = 2;
             dataGridViewShedule.Columns[1].Width = 100;
             dataGridViewShedule.Columns[1].HeaderText = "Аудитория";
-            string[] p = { "Пн", "Вт", "Ср", "Чт", "Пт" };
+            string[] weekDays = { "Пн", "Вт", "Ср", "Чт", "Пт" };
             for (int i = 0; i < 20; i += 4)
             {
-                dataGridViewShedule.Rows[i].HeaderCell.Value = p[i / 4];
+                dataGridViewShedule.Rows[i].HeaderCell.Value = weekDays[i / 4];
             }
             for (int i = 0; i < dataGridViewShedule.Columns.Count; i++)
             {
@@ -55,24 +52,24 @@ namespace Schedule_Editor
             }
             //dataGridViewShedule.DefaultCellStyle.SelectionBackColor = dataGridViewShedule.DefaultCellStyle.BackColor;
 
-            listViewFile.Columns.Add("Дисциплина");
-            listViewFile.Columns.Add("Преподователь");
-            listViewFile.Columns.Add("Тип занятия");
-            listViewFile.Columns.Add("Кол-во часов");
-            listViewFile.Columns[0].Width = 220;
-            listViewFile.Columns[1].Width = 150;
-            listViewFile.Columns[2].Width = 150;
-            listViewFile.Columns[3].Width = 150;
-            listViewFile.Font = new Font(FontFamily.GenericSansSerif, 12);
+            listViewSubjects.Columns.Add("Дисциплина");
+            listViewSubjects.Columns.Add("Преподователь");
+            listViewSubjects.Columns.Add("Тип занятия");
+            listViewSubjects.Columns.Add("Кол-во часов");
+            listViewSubjects.Columns[0].Width = 220;
+            listViewSubjects.Columns[1].Width = 150;
+            listViewSubjects.Columns[2].Width = 150;
+            listViewSubjects.Columns[3].Width = 150;
+            listViewSubjects.Font = new Font(FontFamily.GenericSansSerif, 12);
 
             //listViewGroup.Font = new System.Drawing.Font(FontFamily.GenericSansSerif, 12);
 
             //убираем мерцание и свойства выделения
-            listViewFile.HoverSelection = false;
-            listViewFile.FullRowSelect = true;
-            Type type = listViewFile.GetType();
+            listViewSubjects.HoverSelection = false;
+            listViewSubjects.FullRowSelect = true;
+            Type type = listViewSubjects.GetType();
             PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance);
-            propertyInfo.SetValue(listViewFile, true, null);
+            propertyInfo.SetValue(listViewSubjects, true, null);
 
             foreach (DataGridViewRow row in dataGridViewAudience.Rows)
             {
@@ -94,43 +91,37 @@ namespace Schedule_Editor
         {
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
             {
-                string json = file.ReadToEnd();
-                AllScheduleGroup = JsonConvert.DeserializeObject<ListSubgroupSchedule>(json);
+                AllScheduleGroup = JsonConvert.DeserializeObject<ListSubgroupSchedule>(file.ReadToEnd());
             }
-
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\loads.json"))
             {
-                string json = file.ReadToEnd();
-                AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(json);
+                AllTeachers = JsonConvert.DeserializeObject<ListTeachers>(file.ReadToEnd());
             }
-
-
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\groups.json"))
             {
-                string json = file.ReadToEnd();
-                AllGroups = JsonConvert.DeserializeObject<ListGroups>(json);
+                AllGroups = JsonConvert.DeserializeObject<ListGroups>(file.ReadToEnd());
             }
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\audienceGroup.json"))
             {
-                string json = file.ReadToEnd();
-                AllAudiences = JsonConvert.DeserializeObject<AudienceGroup>(json);
+                AllAudiences = JsonConvert.DeserializeObject<AudienceGroup>(file.ReadToEnd());
             }
         }
         void ShowListViewGroup()
         {
+            listViewGroup.Items.Clear();
             int year = DateTime.Now.Year - 2000;
             listViewGroup.View = View.Tile;
-            listViewGroup.Groups.Add(new ListViewGroup("1 курс"));
-            listViewGroup.Groups.Add(new ListViewGroup("2 курс"));
-            listViewGroup.Groups.Add(new ListViewGroup("3 курс"));
-            listViewGroup.Groups.Add(new ListViewGroup("4 курс"));
+            for (int i = 1; i < 5; i++)
+            {
+                listViewGroup.Groups.Add(new ListViewGroup($"{i} курс"));
+            }
             listViewGroup.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             foreach (var item in AllGroups.Groups)
             {
-                int groupind = year - 1 - Convert.ToInt32(item.Name.Split('-')[1]);
+                int groupInd = year - 1 - Convert.ToInt32(item.Name.Split('-')[1]);
                 ListViewItem group = new ListViewItem(item.Name);
                 listViewGroup.Items.Add(group);
-                listViewGroup.Groups[groupind].Items.Add(group);
+                listViewGroup.Groups[groupInd].Items.Add(group);
             }
 
         }
@@ -142,21 +133,12 @@ namespace Schedule_Editor
             if (infFileShGroup.Length == 0)
                 AddLoads.GenerateNewLoads();
             updateWorkLoads();
-
-
             ShowListViewGroup();
 
             dataGridViewAudience.Hide();
-            //listViewAudienceDescription.Items.Add("описание аудитории");
             listViewAudienceDescription.Hide();
 
-
-            audiences = new List<int>();
-            foreach (var item in AllAudiences.Audiences)
-            {
-                audiences.Add(item.Number);
-            }
-            AudienceCheck();
+            ShowAudiences();
         }
 
         // при нажатии на группу заполняется таблица с расписанием и отображаюся нагрузки преподователей в листе преподователей
@@ -164,68 +146,37 @@ namespace Schedule_Editor
         {
             try
             {
-                // Теперь это бесполезно?? 
-                for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
-                {
-                    dataGridViewShedule.Rows[i].Cells[0].Value = "";
-                    dataGridViewShedule.Rows[i].Cells[1].Value = "";
-                }
-                //
-                listViewFile.Items.Clear();
-                var it = listViewGroup.SelectedItems[0];
-                ActiveGroup = it.Text;
+                ActiveGroup = listViewGroup.SelectedItems[0].Text;
                 dataGridViewShedule.Columns[0].HeaderText = ActiveGroup;
                 ShowShedule();
-                ShowLoads();
+                ShowSubjects();
                 //DisciplineCheck();
             }
             catch (Exception)
             { }
-
         }
 
         void Save()
         {
+            if (ActiveGroup == null) return;
 
-            if (ActiveGroup != null)
+            foreach (var subGrouSchedule in AllScheduleGroup.Shedule)
             {
-                List<string> ls = new List<string>();
-                List<string> audiences = new List<string>();
-                for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+                if (subGrouSchedule.Name == ActiveGroup)
                 {
-                    ls.Add(dataGridViewShedule.Rows[i].Cells[0].Value.ToString());
-
-                    audiences.Add(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
-
-                }
-
-                SubgroupSchedule sb = new SubgroupSchedule(ActiveGroup, ls, audiences);
-
-                bool r = false;
-                foreach (var item in AllScheduleGroup.Shedule)
-                {
-                    if (item.Name == ActiveGroup)
+                    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                     {
-                        item.ScheduleFieldsSubjects = ls;
-                        item.ScheduleFieldsAudiences = audiences;
-                        r = true;
-                        break;
+                        subGrouSchedule.ScheduleFieldsSubjects[i] = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
+                        subGrouSchedule.ScheduleFieldsAudiences[i] = dataGridViewShedule.Rows[i].Cells[1].Value.ToString();
                     }
+                    break;
                 }
-
-                if (!r)
-                {//Когда это случается?
-                    AllScheduleGroup.Shedule.Add(sb);
-                    MessageBox.Show("qqqqq");
-                }
-                var curDir = Environment.CurrentDirectory;
-                var sg = JsonConvert.SerializeObject(AllScheduleGroup);
-                //Console.WriteLine(sg);
-                using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
-                    sw.WriteLine(sg);
-
-                //DisciplineCheck();
             }
+
+            using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
+                sw.WriteLine(JsonConvert.SerializeObject(AllScheduleGroup));
+
+            //DisciplineCheck();
         }
         private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -237,31 +188,22 @@ namespace Schedule_Editor
             for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
             {
                 string s = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
-                for (int j = 0; j < listViewFile.Items.Count; j++)
+                for (int j = 0; j < listViewSubjects.Items.Count; j++)
                 {
-                    string t = ListViewItemToString(listViewFile.Items[j]);
+                    string t = ListViewItemToString(listViewSubjects.Items[j]);
                     if (s == t)
                     {
-                        listViewFile.Items.RemoveAt(j);
+                        listViewSubjects.Items.RemoveAt(j);
                     }
                 }
             }
         }
         // функция отображения аудиторий в его датагриде
-        void AudienceCheck()
+        void ShowAudiences()
         {
-            for (int ind = 0, row = 0, col = 0; ind < audiences.Count; ind++)
+            for (int ind = 0, row = 0, col = 0; ind < AllAudiences.Count; ind++)
             {
-                bool f = false;
-                for (int i = 0; i < dataGridViewShedule.Columns.Count && !f; i++)
-                {
-                    for (int r = 0; r < dataGridViewShedule.Rows.Count && !f; r++)
-                    {
-                        //if (dataGridViewShedule[i, r].Value.ToString() == audiences[ind].ToString())
-                        //f = true;
-                    }
-                }
-                if (!f) dataGridViewAudience[col, row].Value = audiences[ind];
+                dataGridViewAudience[col, row].Value = AllAudiences.Audiences[ind].Number;
                 col++;
                 if (col == dataGridViewAudience.Columns.Count)
                 {
@@ -270,20 +212,20 @@ namespace Schedule_Editor
                 }
             }
         }
-        private void ShowLoads()
+        private void ShowSubjects()
         {
-            listViewFile.Items.Clear();
-            foreach (var item in AllTeachers.Teachers)
+            listViewSubjects.Items.Clear();
+            foreach (var teacher in AllTeachers.Teachers)
             {
-                foreach (var sub in item.Subjects.Items)
+                foreach (var sub in teacher.Subjects.Items)
                 {
                     if (sub.Group == ActiveGroup)
                     {
-                        ListViewItem lds = new ListViewItem(sub.Name);
-                        lds.SubItems.Add(item.LastName + " " + item.FirstName);
-                        lds.SubItems.Add(sub.ClassForm);
-                        lds.SubItems.Add(sub.NumberOfHours.ToString());
-                        listViewFile.Items.Add(lds);
+                        ListViewItem lvi = new ListViewItem(sub.Name);
+                        lvi.SubItems.Add(teacher.LastName + " " + teacher.FirstName);
+                        lvi.SubItems.Add(sub.ClassForm);
+                        lvi.SubItems.Add(sub.NumberOfHours.ToString());
+                        listViewSubjects.Items.Add(lvi);
                     }
                 }
             }
@@ -294,7 +236,6 @@ namespace Schedule_Editor
             {
                 if (item.Name == ActiveGroup)
                 {
-                    //MessageBox.Show("FIND");
                     for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                     {
                         dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsSubjects[i];
@@ -309,41 +250,13 @@ namespace Schedule_Editor
         {
             return $"{item.SubItems[0].Text} {item.SubItems[1].Text} {item.SubItems[2].Text}";
         }
-        private void listViewFile_MouseDown(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                int indexSource = listViewFile.Items.IndexOf(listViewFile.GetItemAt(e.X, e.Y));
-                string s = ListViewItemToString(listViewFile.Items[indexSource]);
-                listViewFile.DoDragDrop(s, DragDropEffects.Copy);
-            }
-            catch
-            {
-
-            }
-        }
-
         private void dataGridViewShedule_SelectionChanged(object sender, EventArgs e)
         {
             this.dataGridViewShedule.ClearSelection();
         }
-        private void listViewFile_DragDrop(object sender, DragEventArgs e)
-        {
-            activeDiscipline = "";
-            ShowLoads();
-            //DisciplineCheck();
-        }
-        private void listViewFile_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.Text))
-            {
-                e.Effect = DragDropEffects.Copy;
-            }
-        }
-
         public bool HasLectorFreeHours(string lector)
         {
-            foreach (ListViewItem item in listViewFile.Items)
+            foreach (ListViewItem item in listViewSubjects.Items)
             {
                 if (ListViewItemToString(item) == lector)
                 {
@@ -352,115 +265,38 @@ namespace Schedule_Editor
             }
             return false;
         }
-        private void dataGridViewShedule_DragDrop(object sender, DragEventArgs e)
+        void ShowAudienceDescription(string aud)
         {
-            try
+            if (!string.IsNullOrEmpty(aud))
             {
-                string cellvalue = e.Data.GetData(typeof(string)) as string;
-                Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
-
-                DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 24);
-                //MessageBox.Show(HasLectorFreeHours(cellvalue).ToString());
-                if (hittest.RowIndex != -1)
+                foreach (var item in AllAudiences.Audiences)
                 {
-                    bool IsAudience = int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1;
-                    bool IsLector = !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0;
-                    if (IsAudience && AllScheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex) ||
-                        IsLector && AllScheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex) && HasLectorFreeHours(cellvalue))
+                    if (item.Number.ToString() == aud)
                     {
-                        activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
-                        dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
+                        listViewAudienceDescription.Items.Clear();
+                        ListViewItem listViewItem = new ListViewItem(aud);
+                        listViewItem.SubItems.Add(item.CountOfSeats.ToString());
+                        listViewItem.SubItems.Add(item.ChalkBoard ? "Есть" : "Нет");
+                        listViewItem.SubItems.Add(item.MarkerBoard ? "Есть" : "Нет");
+                        listViewItem.SubItems.Add(item.NumberOfComputers.ToString());
+                        listViewItem.SubItems.Add(item.Projector ? "Есть" : "Нет");
+                        listViewAudienceDescription.Items.Add(listViewItem);
                     }
                 }
-
-                ShowLoads();
-                //DisciplineCheck();
-                Save();
-            }
-            catch
-            {// MessageBox.Show("ERROR");
             }
         }
-        private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.Text))
-            {
-                e.Effect = DragDropEffects.Copy;
-            }
-        }
-        private void dataGridViewShedule_MouseDown(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
-
-                string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
-                activeDisX = info.ColumnIndex;
-                activeDisY = info.RowIndex;
-                if (!string.IsNullOrEmpty(s))
-                {
-                    dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                    dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = activeDiscipline;
-                    activeDiscipline = "";
-                    activeDisX = -1;
-                    activeDisY = -1;
-                    listViewFile.DoDragDrop(s, DragDropEffects.Copy);
-                    dataGridViewAudience.DoDragDrop(s, DragDropEffects.Copy);
-                    Save();
-                }
-            }
-            catch (Exception)
-            { }
-        }
-
-        private void AudiencesForm_Click(object sender, EventArgs e)
-        {
-            listViewFile.Hide();
-            dataGridViewAudience.Show();
-            listViewAudienceDescription.Show();
-        }
-
-        private void ShedulesForm_Click(object sender, EventArgs e)
-        {
-            listViewFile.Show();
-            dataGridViewAudience.Hide();
-            listViewAudienceDescription.Hide();
-        }
-
         private void dataGridViewAudience_MouseDown(object sender, MouseEventArgs e)
         {
             try
             {
-
                 DataGridView.HitTestInfo info = dataGridViewAudience.HitTest(e.X, e.Y);
-                string s = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
-                if (!string.IsNullOrEmpty(s))
-                {
-                    foreach (var item in AllAudiences.Audiences)
-                    {
-                        if (item.Number.ToString() == s)
-                        {
-                            listViewAudienceDescription.Items.Clear();
-                            ListViewItem listViewItem = new ListViewItem(s);
-                            listViewItem.SubItems.Add(item.CountOfSeats.ToString());
-                            listViewItem.SubItems.Add(item.ChalkBoard ? "Есть" : "Нет");
-                            listViewItem.SubItems.Add(item.MarkerBoard ? "Есть" : "Нет");
-                            listViewItem.SubItems.Add(item.NumberOfComputers.ToString());
-                            listViewItem.SubItems.Add(item.Projector ? "Есть" : "Нет");
-                            listViewAudienceDescription.Items.Add(listViewItem);
-                        }
+                string aud = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
+                ShowAudienceDescription(aud);
+                dataGridViewShedule.DoDragDrop(aud, DragDropEffects.Copy);
 
-                    }
-                    dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                    dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value = "";
-
-                }
-                AudienceCheck();
             }
             catch (Exception)
-            {
-            }
-
+            { }
         }
 
         private void dataGridViewAudience_DragEnter(object sender, DragEventArgs e)
@@ -487,17 +323,109 @@ namespace Schedule_Editor
             }
             catch
             { }
-
         }
 
+        private void listViewSubjects_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                int indexSource = listViewSubjects.Items.IndexOf(listViewSubjects.GetItemAt(e.X, e.Y));
+                string s = ListViewItemToString(listViewSubjects.Items[indexSource]);
+                listViewSubjects.DoDragDrop(s, DragDropEffects.Copy);
+            }
+            catch
+            { }
+        }
+        private void listViewSubjects_DragDrop(object sender, DragEventArgs e)
+        {
+            activeDiscipline = "";
+            ShowSubjects();
+            //DisciplineCheck();
+        }
+        private void listViewSubjects_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Text))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+        private void dataGridViewShedule_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
+                string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
+                if (!string.IsNullOrEmpty(s))
+                {
+                    dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
+                    dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = activeDiscipline;
+                    activeDiscipline = "";
+                    listViewSubjects.DoDragDrop(s, DragDropEffects.Copy);
+                    dataGridViewAudience.DoDragDrop(s, DragDropEffects.Copy);
+                    Save();
+                }
+            }
+            catch (Exception)
+            { }
+        }
+
+
+        private void dataGridViewShedule_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                string cellvalue = e.Data.GetData(typeof(string)) as string;
+                Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
+
+                DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 24);
+                //MessageBox.Show(HasLectorFreeHours(cellvalue).ToString());
+                if (hittest.RowIndex != -1)
+                {
+                    bool IsAudience = int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1;
+                    bool IsLector = !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0;
+                    if (IsAudience && AllScheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex) ||
+                        IsLector && AllScheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex) && HasLectorFreeHours(cellvalue))
+                    {
+                        activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
+                        dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
+                    }
+                }
+
+                ShowSubjects();
+                //DisciplineCheck();
+                Save();
+            }
+            catch
+            { }
+        }
+        private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Text))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void AudiencesForm_Click(object sender, EventArgs e)
+        {
+            listViewSubjects.Hide();
+            dataGridViewAudience.Show();
+            listViewAudienceDescription.Show();
+        }
+
+        private void ShedulesForm_Click(object sender, EventArgs e)
+        {
+            listViewSubjects.Show();
+            dataGridViewAudience.Hide();
+            listViewAudienceDescription.Hide();
+        }
+        
         private void AddLoadsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddLoads.GenerateNewLoads();
             updateWorkLoads();
-            listViewGroup.Items.Clear();
             ShowListViewGroup();
         }
-
 
     }
 }
