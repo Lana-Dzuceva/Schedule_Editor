@@ -136,7 +136,6 @@ namespace Schedule_Editor
         {
             foreach (var subGrouSchedule in AllScheduleGroup.Shedule)
             {
-
                 for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                 {
                     subGrouSchedule.ScheduleFieldsSubjects1[i] = "";
