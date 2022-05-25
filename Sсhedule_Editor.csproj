@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Shedule_Editor</RootNamespace>
     <AssemblyName>Shedule_Editor</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -94,12 +95,12 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Files\audienceGroup.json" />
     <None Include="Files\B010302-21-1-ПМ_1.plx.xls" />
     <None Include="Files\groups.json" />
     <None Include="Files\loads.json" />
-    <None Include="Files\newloads.json" />
     <None Include="Files\subgroupShedule.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -123,6 +124,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="SpannedDataGridView\SpannedDataGridView2010.csproj">
+      <Project>{C2F0B723-17D0-4C11-8847-119D35F5DA8F}</Project>
+      <Name>SpannedDataGridView2010</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

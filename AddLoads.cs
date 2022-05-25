@@ -61,12 +61,10 @@ namespace Schedule_Editor
                         while (!dir.Contains("Итого"))
                         {
                             dir = list.Cell("B" + row.ToString()).GetValue<string>();
-                            //dir = list.Cell("G" + row.ToString()).GetValue<string>();
                             string classF = list.Cell("J" + row.ToString()).GetValue<string>();
                             string[] group = list.Cell("G" + row.ToString()).GetValue<string>().Split(',');
                             if ((group[0].Contains("ПМ") || group[0].Contains("ИВТ") || group[0].Contains("ПОМИ") || group[0].Contains("МАТ")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
-                            // if ((dir.Contains("Математика") || dir.Contains("Информатика") || dir.Contains("Педагогическое")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
-                            {
+                           {
                                 for (int i = 0; i < group.Length; i++)
                                 {
                                     if (classF.Contains("Практич")) classF = "Практика";
@@ -83,7 +81,7 @@ namespace Schedule_Editor
                                         {
                                             temp.Add("");
                                         }
-                                        subgroupShedule.Add(new SubgroupSchedule(group[i], temp, temp));
+                                        subgroupShedule.Add(new SubgroupSchedule(group[i], temp, temp, temp, temp));
                                     }
                                 }
                             }

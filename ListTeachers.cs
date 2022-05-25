@@ -90,14 +90,19 @@ namespace Schedule_Editor
     {
         public string Name { get; set; }
 
-        public List<string> ScheduleFieldsSubjects { get; set; }
+        public List<string> ScheduleFieldsSubjects1 { get; set; }
         public List<string> ScheduleFieldsAudiences { get; set; }
 
-        public SubgroupSchedule(string name, List<string> strings, List<string> numbers)
+        public List<string> ScheduleFieldsSubjects2 { get; set; }
+        public List<string> ScheduleFieldsAudiences2 { get; set; }
+
+        public SubgroupSchedule(string name, List<string> strings, List<string> numbers, List<string> strings2, List<string> numbers2)
         {
             Name = name;
-            ScheduleFieldsSubjects = strings;
+            ScheduleFieldsSubjects1 = strings;
             ScheduleFieldsAudiences = numbers;
+            ScheduleFieldsSubjects2 = strings2;
+            ScheduleFieldsAudiences2 = numbers2;
         }
 
 
@@ -124,7 +129,11 @@ namespace Schedule_Editor
         {
             foreach (var subGroup in Shedule)
             {
-                if (subGroup.ScheduleFieldsSubjects[numberOfLecture].Contains(secName)) return false;
+                if (subGroup.ScheduleFieldsSubjects1[numberOfLecture].Contains(secName)) return false;
+            }
+            foreach (var subGroup in Shedule)
+            {
+                if (subGroup.ScheduleFieldsSubjects2[numberOfLecture].Contains(secName)) return false;
             }
             return true;
         }
@@ -144,6 +153,21 @@ namespace Schedule_Editor
             {
                 if (!this.ContainsSubGroup(subgroup.Name)) Shedule.Add(subgroup);
             }
+        }
+        public bool IsScheduleFilled()
+        {
+            foreach (var group in Shedule)
+            {
+                for (int i = 0; i < group.ScheduleFieldsSubjects1.Count; i++)
+                {
+                    if (string.IsNullOrEmpty(group.ScheduleFieldsSubjects1[i]) || string.IsNullOrEmpty(group.ScheduleFieldsAudiences[i])) return false;
+                }
+                for (int i = 0; i < group.ScheduleFieldsSubjects2.Count; i++)
+                {
+                    if (string.IsNullOrEmpty(group.ScheduleFieldsSubjects2[i]) || string.IsNullOrEmpty(group.ScheduleFieldsAudiences[i])) return false;
+                }
+            }
+            return true;
         }
     }
 }

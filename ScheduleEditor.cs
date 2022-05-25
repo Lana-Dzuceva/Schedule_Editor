@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using SpannedDataGridView;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -29,9 +31,33 @@ namespace Schedule_Editor
             dataGridViewShedule.Height = formheight = this.Height - 40;
             dataGridViewShedule.Width = formwidth = this.Width;
             dataGridViewShedule.RowTemplate.Height = 46;
+            dataGridViewShedule.Columns.Add(new SpannedDataGridView.DataGridViewTextBoxColumnEx());
+
+            //            //
+            //        this.Column1 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
+            //        this.Column2 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
+            //        private DataGridViewTextBoxColumnEx Column1;
+            //    private DataGridViewTextBoxColumnEx Column2;
+            //    this.dataGridViewShedule.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            //        this.Column1,
+            //        this.Column2
+            //});
+            // // 
+            // // Column1
+            // // 
+            //        this.Column1.Name = "Column1";
+            //        this.Column1.ReadOnly = true;
+            //        // 
+            //        // Column2
+            //        // 
+            //        this.Column2.Name = "Column2";
+            //        this.Column2.ReadOnly = true;
+            //private DataGridViewTextBoxColumnEx Column1;
+            //private DataGridViewTextBoxColumnEx Column2;
+            ////
             dataGridViewShedule.RowCount = 20;
             dataGridViewShedule.ColumnHeadersHeight = 40;
-            dataGridViewShedule.ColumnCount = 2;
+            dataGridViewShedule.ColumnCount = 4;
             dataGridViewShedule.Columns[1].Width = 100;
             dataGridViewShedule.Columns[1].HeaderText = "Аудитория";
             string[] weekDays = { "Пн", "Вт", "Ср", "Чт", "Пт" };
@@ -85,8 +111,8 @@ namespace Schedule_Editor
             {
                 listViewAudienceDescription.Columns.Add(item, 120);
             }
+            fill();
         }
-
         void updateWorkLoads()
         {
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
@@ -104,6 +130,21 @@ namespace Schedule_Editor
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\audienceGroup.json"))
             {
                 AllAudiences = JsonConvert.DeserializeObject<AudienceGroup>(file.ReadToEnd());
+            }
+        }
+        void fill()
+        {
+            foreach (var subGrouSchedule in AllScheduleGroup.Shedule)
+            {
+
+                for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+                {
+                    subGrouSchedule.ScheduleFieldsSubjects1[i] = "";
+                    subGrouSchedule.ScheduleFieldsAudiences[i] = "";
+                    subGrouSchedule.ScheduleFieldsSubjects2[i] = "";
+                    subGrouSchedule.ScheduleFieldsAudiences2[i] = "";
+
+                }
             }
         }
         void ShowListViewGroup()
@@ -166,8 +207,11 @@ namespace Schedule_Editor
                 {
                     for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                     {
-                        subGrouSchedule.ScheduleFieldsSubjects[i] = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
-                        subGrouSchedule.ScheduleFieldsAudiences[i] = dataGridViewShedule.Rows[i].Cells[1].Value.ToString();
+                        subGrouSchedule.ScheduleFieldsSubjects1[i] = dataGridViewShedule.Rows[i].Cells[1].Value.ToString();
+                        subGrouSchedule.ScheduleFieldsAudiences[i] = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
+                        subGrouSchedule.ScheduleFieldsSubjects2[i] = dataGridViewShedule.Rows[i].Cells[2].Value.ToString() ?? "";
+                        subGrouSchedule.ScheduleFieldsAudiences2[i] = dataGridViewShedule.Rows[i].Cells[3].Value.ToString() ?? "";
+
                     }
                     break;
                 }
@@ -180,6 +224,11 @@ namespace Schedule_Editor
         }
         private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!AllScheduleGroup.IsScheduleFilled())
+            {
+                var res = MessageBox.Show("Не все поля расписания заполнены. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (res == DialogResult.No) return;
+            }
             SaveSchedule.Save();
         }
 
@@ -238,12 +287,13 @@ namespace Schedule_Editor
                 {
                     for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                     {
-                        dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsSubjects[i];
-                        dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsAudiences[i];
+                        dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsSubjects1[i] ?? "";
+                        dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsAudiences[i] ?? "";
                     }
                     break;
                 }
             }
+
 
         }
         private string ListViewItemToString(ListViewItem item)
@@ -419,13 +469,14 @@ namespace Schedule_Editor
             dataGridViewAudience.Hide();
             listViewAudienceDescription.Hide();
         }
-        
+
         private void AddLoadsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddLoads.GenerateNewLoads();
             updateWorkLoads();
             ShowListViewGroup();
         }
+
 
     }
 }

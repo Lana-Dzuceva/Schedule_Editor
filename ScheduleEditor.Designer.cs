@@ -1,4 +1,6 @@
 ﻿
+using SpannedDataGridView;
+
 namespace Schedule_Editor
 {
     partial class ScheduleEditor
@@ -75,6 +77,7 @@ namespace Schedule_Editor
             this.dataGridViewShedule.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewShedule.ColumnHeadersHeight = 30;
             this.dataGridViewShedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            
             this.dataGridViewShedule.Dock = System.Windows.Forms.DockStyle.Left;
             this.dataGridViewShedule.EnableHeadersVisualStyles = false;
             this.dataGridViewShedule.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -101,6 +104,7 @@ namespace Schedule_Editor
             this.dataGridViewShedule.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridViewShedule_DragDrop);
             this.dataGridViewShedule.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridViewShedule_DragEnter);
             this.dataGridViewShedule.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dataGridViewShedule_MouseDown);
+           
             // 
             // imageListLarge
             // 
@@ -183,7 +187,7 @@ namespace Schedule_Editor
             this.splitter1.TabStop = false;
             this.splitter1.Visible = false;
             // 
-            // listViewFile
+            // listViewSubjects
             // 
             this.listViewSubjects.AllowDrop = true;
             this.listViewSubjects.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -194,7 +198,7 @@ namespace Schedule_Editor
             listViewItem1});
             this.listViewSubjects.Location = new System.Drawing.Point(477, 24);
             this.listViewSubjects.MultiSelect = false;
-            this.listViewSubjects.Name = "listViewFile";
+            this.listViewSubjects.Name = "listViewSubjects";
             this.listViewSubjects.ShowGroups = false;
             this.listViewSubjects.Size = new System.Drawing.Size(364, 421);
             this.listViewSubjects.TabIndex = 8;
@@ -310,6 +314,7 @@ namespace Schedule_Editor
         private System.Windows.Forms.DataGridView dataGridViewAudience;
         private System.Windows.Forms.ListView listViewAudienceDescription;
         private System.Windows.Forms.ToolStripMenuItem AddLoadsToolStripMenuItem;
+        
     }
 }
 
