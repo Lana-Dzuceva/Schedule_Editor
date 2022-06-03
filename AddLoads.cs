@@ -35,9 +35,8 @@ namespace Schedule_Editor
             }
             List<Group> listGroups = new List<Group>();
             List<Teacher> teachlst = new List<Teacher>();
-            List<SubgroupSchedule> subgroupShedule = new List<SubgroupSchedule>();
+            List<SubgroupSchedule> subgroupSchedule = new List<SubgroupSchedule>();
             XLWorkbook book = new XLWorkbook(xlPath);
-
 
             var lists = book.Worksheets;
             foreach (var list in lists)
@@ -61,11 +60,9 @@ namespace Schedule_Editor
                         while (!dir.Contains("Итого"))
                         {
                             dir = list.Cell("B" + row.ToString()).GetValue<string>();
-                            //dir = list.Cell("G" + row.ToString()).GetValue<string>();
                             string classF = list.Cell("J" + row.ToString()).GetValue<string>();
                             string[] group = list.Cell("G" + row.ToString()).GetValue<string>().Split(',');
                             if ((group[0].Contains("ПМ") || group[0].Contains("ИВТ") || group[0].Contains("ПОМИ") || group[0].Contains("МАТ")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
-                            // if ((dir.Contains("Математика") || dir.Contains("Информатика") || dir.Contains("Педагогическое")) && (classF.Contains("Лекция") || classF.Contains("Лабораторная") || classF.Contains("Практич")))
                             {
                                 for (int i = 0; i < group.Length; i++)
                                 {
@@ -75,7 +72,7 @@ namespace Schedule_Editor
                                         group[i],
                                         classF);
                                     listSubjects.Add(sb);
-                                    if (!ListGroups.ContainsGroup(listGroups, group[i]))
+                                    if ((new ListGroups(listGroups)).ContainsGroup(group[i]))
                                     {
                                         listGroups.Add(new Group(group[i]));
                                         var temp = new List<string>();
@@ -83,13 +80,12 @@ namespace Schedule_Editor
                                         {
                                             temp.Add("");
                                         }
-                                        subgroupShedule.Add(new SubgroupSchedule(group[i], temp, temp));
+                                        subgroupSchedule.Add(new SubgroupSchedule(group[i], temp, temp));
                                     }
                                 }
                             }
                             row++;
                         }
-                        //MessageBox.Show(listSubjects.Count.ToString());
                         if (listSubjects.Count > 0)
                         {
                             int indEl = ListTeachers.ContainsTeacher(teachlst, lastName, firstName);
@@ -146,7 +142,7 @@ namespace Schedule_Editor
                 string json = file.ReadToEnd();
                 AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupSchedule>(json);
             }
-            AllSheduleGroup.Update(subgroupShedule);
+            AllSheduleGroup.Update(subgroupSchedule);
 
             using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
                 sw.WriteLine(JsonConvert.SerializeObject(AllSheduleGroup));

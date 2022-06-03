@@ -13,7 +13,6 @@ namespace Schedule_Editor
         public bool ChalkBoard { get; set; }
         public bool MarkerBoard { get; set; }
         public int CountOfSeats { get; set; }
-        //public int CountOfTables { get; set; }
         public bool Projector { get; set; }
         public bool IsUsed { get; set; }
         public Audience(int number, int numberOfComputers, bool chalkBoard, bool markerBoard, int countOfSeats, bool projector)
@@ -23,7 +22,6 @@ namespace Schedule_Editor
             ChalkBoard = chalkBoard;
             MarkerBoard = markerBoard;
             CountOfSeats = countOfSeats;
-            //CountOfTables = countOfTables;
             Projector = projector;
             IsUsed = false;
         }

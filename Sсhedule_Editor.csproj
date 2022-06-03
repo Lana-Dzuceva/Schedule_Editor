@@ -82,7 +82,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Teacher.cs" />
-    <Compile Include="ListTeachers.cs" />
+    <Compile Include="Group.cs" />
     <EmbeddedResource Include="ScheduleEditor.resx">
       <DependentUpon>ScheduleEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -116,7 +116,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="image.png" />
     <Resource Include="Images\image.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

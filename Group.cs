@@ -1,37 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Schedule_Editor
 {
-    class ListTeachers
-    {
-        public List<Teacher> Teachers { get; set; }
-
-        public ListTeachers(List<Teacher> teachers)
-        {
-            Teachers = teachers;
-        }
-        public void Update(List<Teacher> teachers)
-        {
-            foreach (Teacher teacher in teachers)
-            {
-                if (ContainsTeacher(Teachers, teacher.LastName, teacher.FirstName) == -1) Teachers.Add(teacher);
-            }
-            //Teachers.AddRange(teachers);
-        }
-        public static int ContainsTeacher(List<Teacher> lst, string lastName, string firstName)
-        {
-            for (int i = 0; i < lst.Count; i++)
-            {
-                if (lst[i].LastName == lastName && lst[i].FirstName == firstName) return i;
-            }
-            return -1;
-        }
-    }
-
+   
     class Group
     {
         public string Name { get; set; }
@@ -57,15 +29,15 @@ namespace Schedule_Editor
         /// <param name="lst"></param>
         /// <param name="gr"></param>
         /// <returns></returns>
-        public static bool ContainsGroup(List<Group> lst, string gr)
-        {
-            for (int i = 0; i < lst.Count; i++)
-            {
-                if (lst[i].Name == gr) return true;
-            }
-            return false;
-        }
-        public bool ContainsGroup1(string gr)
+        //public static bool ContainsGroup(List<Group> lst, string gr)
+        //{
+        //    for (int i = 0; i < lst.Count; i++)
+        //    {
+        //        if (lst[i].Name == gr) return true;
+        //    }
+        //    return false;
+        //}
+        public bool ContainsGroup(string gr)
         {
             for (int i = 0; i < Groups.Count; i++)
             {
@@ -77,12 +49,11 @@ namespace Schedule_Editor
         {
             foreach (Group group in groups)
             {
-                if (!this.ContainsGroup1(group.Name))
+                if (!this.ContainsGroup(group.Name))
                 {
                     Groups.Add(group);
                 }
             }
-            //Groups.AddRange(groups);
         }
     }
 
@@ -99,8 +70,6 @@ namespace Schedule_Editor
             ScheduleFieldsSubjects = strings;
             ScheduleFieldsAudiences = numbers;
         }
-
-
     }
 
     class ListSubgroupSchedule

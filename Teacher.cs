@@ -47,4 +47,30 @@ namespace Schedule_Editor
             ClassForm = classForm;
         }
     }
+    class ListTeachers
+    {
+        public List<Teacher> Teachers { get; set; }
+
+        public ListTeachers(List<Teacher> teachers)
+        {
+            Teachers = teachers;
+        }
+        public void Update(List<Teacher> teachers)
+        {
+            foreach (Teacher teacher in teachers)
+            {
+                if (ContainsTeacher(Teachers, teacher.LastName, teacher.FirstName) == -1) Teachers.Add(teacher);
+            }
+            //Teachers.AddRange(teachers);
+        }
+        public static int ContainsTeacher(List<Teacher> lst, string lastName, string firstName)
+        {
+            for (int i = 0; i < lst.Count; i++)
+            {
+                if (lst[i].LastName == lastName && lst[i].FirstName == firstName) return i;
+            }
+            return -1;
+        }
+    }
+
 }

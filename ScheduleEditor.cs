@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-//using System.Windows.Media;
 
 namespace Schedule_Editor
 {
@@ -17,8 +15,6 @@ namespace Schedule_Editor
         ListGroups AllGroups;
         string ActiveGroup;
         string activeDiscipline = "";
-        int formwidth;
-        int formheight;
         string curDir = Environment.CurrentDirectory;
         int CountOfWeeksInYear = 39;
         int CountOfWeeksIn1Semester = 18;
@@ -26,32 +22,31 @@ namespace Schedule_Editor
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
-            dataGridViewShedule.Height = formheight = this.Height - 40;
-            dataGridViewShedule.Width = formwidth = this.Width;
-            dataGridViewShedule.RowTemplate.Height = 46;
-            dataGridViewShedule.RowCount = 20;
-            dataGridViewShedule.ColumnHeadersHeight = 40;
-            dataGridViewShedule.ColumnCount = 2;
-            dataGridViewShedule.Columns[1].Width = 100;
-            dataGridViewShedule.Columns[1].HeaderText = "Аудитория";
+            dataGridViewSсhedule.Height = this.Height - 40;
+            dataGridViewSсhedule.Width = this.Width;
+            dataGridViewSсhedule.RowTemplate.Height = 46;
+            dataGridViewSсhedule.RowCount = 20;
+            dataGridViewSсhedule.ColumnHeadersHeight = 40;
+            dataGridViewSсhedule.ColumnCount = 2;
+            dataGridViewSсhedule.Columns[1].Width = 100;
+            dataGridViewSсhedule.Columns[1].HeaderText = "Аудитория";
             string[] weekDays = { "Пн", "Вт", "Ср", "Чт", "Пт" };
             for (int i = 0; i < 20; i += 4)
             {
-                dataGridViewShedule.Rows[i].HeaderCell.Value = weekDays[i / 4];
+                dataGridViewSсhedule.Rows[i].HeaderCell.Value = weekDays[i / 4];
             }
-            for (int i = 0; i < dataGridViewShedule.Columns.Count; i++)
+            for (int i = 0; i < dataGridViewSсhedule.Columns.Count; i++)
             {
-                dataGridViewShedule.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dataGridViewSсhedule.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            for (int col = 0; col < dataGridViewShedule.Columns.Count; col++)
+            for (int col = 0; col < dataGridViewSсhedule.Columns.Count; col++)
             {
-                for (int row = 0; row < dataGridViewShedule.Rows.Count; row++)
+                for (int row = 0; row < dataGridViewSсhedule.Rows.Count; row++)
                 {
-                    dataGridViewShedule[col, row].Value = "";
+                    dataGridViewSсhedule[col, row].Value = "";
                 }
             }
-            //dataGridViewShedule.DefaultCellStyle.SelectionBackColor = dataGridViewShedule.DefaultCellStyle.BackColor;
-
+            
             listViewSubjects.Columns.Add("Дисциплина");
             listViewSubjects.Columns.Add("Преподователь");
             listViewSubjects.Columns.Add("Тип занятия");
@@ -62,15 +57,13 @@ namespace Schedule_Editor
             listViewSubjects.Columns[3].Width = 150;
             listViewSubjects.Font = new Font(FontFamily.GenericSansSerif, 12);
 
-            //listViewGroup.Font = new System.Drawing.Font(FontFamily.GenericSansSerif, 12);
-
             //убираем мерцание и свойства выделения
             listViewSubjects.HoverSelection = false;
             listViewSubjects.FullRowSelect = true;
             Type type = listViewSubjects.GetType();
             PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance);
             propertyInfo.SetValue(listViewSubjects, true, null);
-
+            //
             foreach (DataGridViewRow row in dataGridViewAudience.Rows)
             {
                 row.Height = 40;
@@ -78,7 +71,6 @@ namespace Schedule_Editor
             dataGridViewAudience.RowCount = 5;
             dataGridViewAudience.ColumnCount = 10;
             dataGridViewAudience.BackgroundColor = Color.White;
-
 
             listViewAudienceDescription.Height = 350;
             foreach (var item in new string[] { "Номер", "Количество мест", "Меловая доска", "Маркерная доска", "Количество компьютеров", "Проектор" })
@@ -126,7 +118,7 @@ namespace Schedule_Editor
 
         }
         // считываем данные с файлов и заполняем лист групп
-        private void FormShedule_Load(object sender, EventArgs e)
+        private void FormSchedule_Load(object sender, EventArgs e)
         {
 
             var infFileShGroup = new FileInfo(curDir + @"\..\..\Files\subgroupShedule.json");
@@ -147,8 +139,8 @@ namespace Schedule_Editor
             try
             {
                 ActiveGroup = listViewGroup.SelectedItems[0].Text;
-                dataGridViewShedule.Columns[0].HeaderText = ActiveGroup;
-                ShowShedule();
+                dataGridViewSсhedule.Columns[0].HeaderText = ActiveGroup;
+                ShowSchedule();
                 ShowSubjects();
                 //DisciplineCheck();
             }
@@ -164,10 +156,10 @@ namespace Schedule_Editor
             {
                 if (subGrouSchedule.Name == ActiveGroup)
                 {
-                    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+                    for (int i = 0; i < dataGridViewSсhedule.Rows.Count; i++)
                     {
-                        subGrouSchedule.ScheduleFieldsSubjects[i] = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
-                        subGrouSchedule.ScheduleFieldsAudiences[i] = dataGridViewShedule.Rows[i].Cells[1].Value.ToString();
+                        subGrouSchedule.ScheduleFieldsSubjects[i] = dataGridViewSсhedule.Rows[i].Cells[0].Value.ToString();
+                        subGrouSchedule.ScheduleFieldsAudiences[i] = dataGridViewSсhedule.Rows[i].Cells[1].Value.ToString();
                     }
                     break;
                 }
@@ -185,9 +177,9 @@ namespace Schedule_Editor
 
         private void DisciplineCheck()
         {
-            for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+            for (int i = 0; i < dataGridViewSсhedule.Rows.Count; i++)
             {
-                string s = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
+                string s = dataGridViewSсhedule.Rows[i].Cells[0].Value.ToString();
                 for (int j = 0; j < listViewSubjects.Items.Count; j++)
                 {
                     string t = ListViewItemToString(listViewSubjects.Items[j]);
@@ -230,16 +222,16 @@ namespace Schedule_Editor
                 }
             }
         }
-        private void ShowShedule()
+        private void ShowSchedule()
         {
             foreach (var item in AllScheduleGroup.Shedule)
             {
                 if (item.Name == ActiveGroup)
                 {
-                    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+                    for (int i = 0; i < dataGridViewSсhedule.Rows.Count; i++)
                     {
-                        dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsSubjects[i];
-                        dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsAudiences[i];
+                        dataGridViewSсhedule[0, i].Value = item.ScheduleFieldsSubjects[i];
+                        dataGridViewSсhedule[1, i].Value = item.ScheduleFieldsAudiences[i];
                     }
                     break;
                 }
@@ -250,9 +242,9 @@ namespace Schedule_Editor
         {
             return $"{item.SubItems[0].Text} {item.SubItems[1].Text} {item.SubItems[2].Text}";
         }
-        private void dataGridViewShedule_SelectionChanged(object sender, EventArgs e)
+        private void dataGridViewSchedule_SelectionChanged(object sender, EventArgs e)
         {
-            this.dataGridViewShedule.ClearSelection();
+            this.dataGridViewSсhedule.ClearSelection();
         }
         public bool HasLectorFreeHours(string lector)
         {
@@ -292,7 +284,7 @@ namespace Schedule_Editor
                 DataGridView.HitTestInfo info = dataGridViewAudience.HitTest(e.X, e.Y);
                 string aud = dataGridViewAudience[info.ColumnIndex, info.RowIndex].Value.ToString();
                 ShowAudienceDescription(aud);
-                dataGridViewShedule.DoDragDrop(aud, DragDropEffects.Copy);
+                dataGridViewSсhedule.DoDragDrop(aud, DragDropEffects.Copy);
 
             }
             catch (Exception)
@@ -353,12 +345,12 @@ namespace Schedule_Editor
         {
             try
             {
-                DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
-                string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
+                DataGridView.HitTestInfo info = dataGridViewSсhedule.HitTest(e.X, e.Y);
+                string s = dataGridViewSсhedule[info.ColumnIndex, info.RowIndex].Value.ToString();
                 if (!string.IsNullOrEmpty(s))
                 {
-                    dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
-                    dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value = activeDiscipline;
+                    dataGridViewSсhedule.DoDragDrop(s, DragDropEffects.Copy);
+                    dataGridViewSсhedule[info.ColumnIndex, info.RowIndex].Value = activeDiscipline;
                     activeDiscipline = "";
                     listViewSubjects.DoDragDrop(s, DragDropEffects.Copy);
                     dataGridViewAudience.DoDragDrop(s, DragDropEffects.Copy);
@@ -376,9 +368,8 @@ namespace Schedule_Editor
             {
                 string cellvalue = e.Data.GetData(typeof(string)) as string;
                 Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
-
-                DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 24);
-                //MessageBox.Show(HasLectorFreeHours(cellvalue).ToString());
+                DataGridView.HitTestInfo hittest = dataGridViewSсhedule.HitTest(cursorLocation.X, cursorLocation.Y - 24);
+                
                 if (hittest.RowIndex != -1)
                 {
                     bool IsAudience = int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1;
@@ -386,8 +377,8 @@ namespace Schedule_Editor
                     if (IsAudience && AllScheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex) ||
                         IsLector && AllScheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex) && HasLectorFreeHours(cellvalue))
                     {
-                        activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
-                        dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
+                        activeDiscipline = dataGridViewSсhedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
+                        dataGridViewSсhedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
                     }
                 }
 
@@ -398,7 +389,7 @@ namespace Schedule_Editor
             catch
             { }
         }
-        private void dataGridViewShedule_DragEnter(object sender, DragEventArgs e)
+        private void dataGridViewSchedule_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.Text))
             {
