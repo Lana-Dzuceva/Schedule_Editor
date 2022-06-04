@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Schedule_Editor
 {
@@ -85,24 +83,56 @@ namespace Schedule_Editor
             //Groups.AddRange(groups);
         }
     }
-
+    class ScheduleString
+    {
+        public string FirstWeek { get; set; }
+        public string SecondWeek { get; set; }
+        
+        public ScheduleString(string firstWeek, string secondWeek = "")
+        {
+            FirstWeek = firstWeek;
+            SecondWeek = secondWeek;
+        }
+    }
+    enum ScheduleRows
+    {
+        VerticalSplitted,
+        HorizontalSplitted,
+        NonSplitted
+    }
     class SubgroupSchedule
     {
         public string Name { get; set; }
 
-        public List<string> ScheduleFieldsSubjects1 { get; set; }
-        public List<string> ScheduleFieldsAudiences { get; set; }
+        public List<ScheduleString> ScheduleFieldsSubjectsSubGroup1 { get; set; }
+        public List<ScheduleString> ScheduleFieldsAudiencesSubGroup1 { get; set; }
 
-        public List<string> ScheduleFieldsSubjects2 { get; set; }
-        public List<string> ScheduleFieldsAudiences2 { get; set; }
+        public List<ScheduleString> ScheduleFieldsSubjectsSubGroup2 { get; set; }
+        public List<ScheduleString> ScheduleFieldsAudiencesSubGroup2 { get; set; }
 
-        public SubgroupSchedule(string name, List<string> strings, List<string> numbers, List<string> strings2, List<string> numbers2)
+
+        [JsonConstructor]
+        public SubgroupSchedule(string name, List<ScheduleString> strings, List<ScheduleString> numbers, List<ScheduleString> strings2, List<ScheduleString> numbers2)
         {
             Name = name;
-            ScheduleFieldsSubjects1 = strings;
-            ScheduleFieldsAudiences = numbers;
-            ScheduleFieldsSubjects2 = strings2;
-            ScheduleFieldsAudiences2 = numbers2;
+            ScheduleFieldsSubjectsSubGroup1 = strings;
+            ScheduleFieldsAudiencesSubGroup1 = numbers;
+            ScheduleFieldsSubjectsSubGroup2 = strings2;
+            ScheduleFieldsAudiencesSubGroup2 = numbers2;
+        }
+        public SubgroupSchedule(string name)
+        {
+            Name = name;
+            List<ScheduleString> temp = new List<ScheduleString>(20);
+            for (int i = 0; i < 20; i++)
+            {
+                temp.Add(new ScheduleString("", ""));
+                
+            }
+            ScheduleFieldsSubjectsSubGroup1 = temp;
+            ScheduleFieldsAudiencesSubGroup1 = temp;
+            ScheduleFieldsSubjectsSubGroup2 = temp;
+            ScheduleFieldsAudiencesSubGroup2 = temp;
         }
 
 
@@ -112,29 +142,31 @@ namespace Schedule_Editor
     {
         public List<SubgroupSchedule> Shedule { get; set; }
 
+        
         public ListSubgroupSchedule(List<SubgroupSchedule> shedule)
         {
             Shedule = shedule;
         }
+        
         public bool IsAudienceEmpty(string number, int numberOfLecture)
         {
-            foreach (var subGroup in Shedule)
-            {
-                if (subGroup.ScheduleFieldsAudiences[numberOfLecture] == number) return false;
+            //foreach (var subGroup in Shedule)
+            //{
+            //    if (subGroup.ScheduleFieldsAudiencesSubGroup1[numberOfLecture] == number) return false;
 
-            }
+            //}
             return true;
         }
         public bool IsLectorFree(string secName, int numberOfLecture)
         {
-            foreach (var subGroup in Shedule)
-            {
-                if (subGroup.ScheduleFieldsSubjects1[numberOfLecture].Contains(secName)) return false;
-            }
-            foreach (var subGroup in Shedule)
-            {
-                if (subGroup.ScheduleFieldsSubjects2[numberOfLecture].Contains(secName)) return false;
-            }
+            //foreach (var subGroup in Shedule)
+            //{
+            //    if (subGroup.ScheduleFieldsSubjectsSubGroup1[numberOfLecture].Contains(secName)) return false;
+            //}
+            //foreach (var subGroup in Shedule)
+            //{
+            //    if (subGroup.ScheduleFieldsSubjectsSubGroup2[numberOfLecture].Contains(secName)) return false;
+            //}
             return true;
         }
 
@@ -156,17 +188,17 @@ namespace Schedule_Editor
         }
         public bool IsScheduleFilled()
         {
-            foreach (var group in Shedule)
-            {
-                for (int i = 0; i < group.ScheduleFieldsSubjects1.Count; i++)
-                {
-                    if (string.IsNullOrEmpty(group.ScheduleFieldsSubjects1[i]) || string.IsNullOrEmpty(group.ScheduleFieldsAudiences[i])) return false;
-                }
-                for (int i = 0; i < group.ScheduleFieldsSubjects2.Count; i++)
-                {
-                    if (string.IsNullOrEmpty(group.ScheduleFieldsSubjects2[i]) || string.IsNullOrEmpty(group.ScheduleFieldsAudiences[i])) return false;
-                }
-            }
+            //foreach (var group in Shedule)
+            //{
+            //    for (int i = 0; i < group.ScheduleFieldsSubjectsSubGroup1.Count; i++)
+            //    {
+            //        if (string.IsNullOrEmpty(group.ScheduleFieldsSubjectsSubGroup1[i]) || string.IsNullOrEmpty(group.ScheduleFieldsAudiencesSubGroup1[i])) return false;
+            //    }
+            //    for (int i = 0; i < group.ScheduleFieldsSubjectsSubGroup2.Count; i++)
+            //    {
+            //        if (string.IsNullOrEmpty(group.ScheduleFieldsSubjectsSubGroup2[i]) || string.IsNullOrEmpty(group.ScheduleFieldsAudiencesSubGroup1[i])) return false;
+            //    }
+            //}
             return true;
         }
     }

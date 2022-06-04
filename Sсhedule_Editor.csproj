@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="AddLoads.cs" />
     <Compile Include="Audience.cs" />
+    <Compile Include="ClassRow.cs" />
     <Compile Include="SaveSchedule.cs" />
     <Compile Include="ScheduleEditor.cs">
       <SubType>Form</SubType>

@@ -43,26 +43,26 @@ namespace Schedule_Editor
                 string json = file.ReadToEnd();
                 AllSheduleGroup = JsonConvert.DeserializeObject<ListSubgroupSchedule>(json);
             }
-            foreach (var group in AllSheduleGroup.Shedule)
-            {
-                workbook.AddWorksheet(group.Name);
-                for (int i = 0; i < group.ScheduleFieldsSubjects1.Count; i++)
-                {
-                    ////workbook.Worksheet(group.Name).
-                    //string text = group.ScheduleFieldsSubjects[i];
-                    ////MessageBox.Show((text == string.Empty).ToString());
-                    ////MessageBox.Show("С" + (i + 1).ToString());
-                    //workbook.Worksheet(group.Name).Cell("C" + (i + 1).ToString()).Value = "1";
-                    //MessageBox.Show(("С" == "C").ToString());
+            //foreach (var group in AllSheduleGroup.Shedule)
+            //{
+            //    workbook.AddWorksheet(group.Name);
+            //    for (int i = 0; i < group.ScheduleFieldsSubjectsSubGroup1.Count; i++)
+            //    {
+            //        ////workbook.Worksheet(group.Name).
+            //        //string text = group.ScheduleFieldsSubjects[i];
+            //        ////MessageBox.Show((text == string.Empty).ToString());
+            //        ////MessageBox.Show("С" + (i + 1).ToString());
+            //        //workbook.Worksheet(group.Name).Cell("C" + (i + 1).ToString()).Value = "1";
+            //        //MessageBox.Show(("С" == "C").ToString());
 
-                    string lection = group.ScheduleFieldsSubjects1[i];
-                    string audience = group.ScheduleFieldsAudiences[i];
-                    workbook.Worksheet(group.Name).Cell("B" + (i + 1).ToString()).Value = $"{(i) % 4 + 1} пара";
-                    workbook.Worksheet(group.Name).Column("C").Width = 100;
-                    workbook.Worksheet(group.Name).Cell("C" + (i + 1).ToString()).Value = $"{lection}, ауд.{audience}";
+            //        string lection = group.ScheduleFieldsSubjectsSubGroup1[i];
+            //        string audience = group.ScheduleFieldsAudiencesSubGroup1[i];
+            //        workbook.Worksheet(group.Name).Cell("B" + (i + 1).ToString()).Value = $"{(i) % 4 + 1} пара";
+            //        workbook.Worksheet(group.Name).Column("C").Width = 100;
+            //        workbook.Worksheet(group.Name).Cell("C" + (i + 1).ToString()).Value = $"{lection}, ауд.{audience}";
                     
-                }
-            }
+            //    }
+            //}
             
             workbook.SaveAs(xlPath);
         }

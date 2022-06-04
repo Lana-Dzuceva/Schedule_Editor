@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Shedule_Editor;
 using SpannedDataGridView;
 using System;
 using System.Collections.Generic;
@@ -30,36 +31,34 @@ namespace Schedule_Editor
             this.WindowState = FormWindowState.Maximized;
             dataGridViewShedule.Height = formheight = this.Height - 40;
             dataGridViewShedule.Width = formwidth = this.Width;
-            dataGridViewShedule.RowTemplate.Height = 46;
-            dataGridViewShedule.Columns.Add(new SpannedDataGridView.DataGridViewTextBoxColumnEx());
+            dataGridViewShedule.RowTemplate.Height = 23;
+            for (int i = 0; i < 4; i++)
+            {
+                dataGridViewShedule.Columns.Add(new SpannedDataGridView.DataGridViewTextBoxColumnEx());
 
-            //            //
-            //        this.Column1 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
-            //        this.Column2 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
-            //        private DataGridViewTextBoxColumnEx Column1;
-            //    private DataGridViewTextBoxColumnEx Column2;
-            //    this.dataGridViewShedule.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            //        this.Column1,
-            //        this.Column2
-            //});
-            // // 
-            // // Column1
-            // // 
-            //        this.Column1.Name = "Column1";
-            //        this.Column1.ReadOnly = true;
-            //        // 
-            //        // Column2
-            //        // 
-            //        this.Column2.Name = "Column2";
-            //        this.Column2.ReadOnly = true;
-            //private DataGridViewTextBoxColumnEx Column1;
-            //private DataGridViewTextBoxColumnEx Column2;
-            ////
-            dataGridViewShedule.RowCount = 20;
+            }
+
+
+            dataGridViewShedule.RowCount = 40;
             dataGridViewShedule.ColumnHeadersHeight = 40;
-            dataGridViewShedule.ColumnCount = 4;
-            dataGridViewShedule.Columns[1].Width = 100;
-            dataGridViewShedule.Columns[1].HeaderText = "Аудитория";
+            //dataGridViewShedule.ColumnCount = 4;
+
+            int w = dataGridViewShedule.Width - dataGridViewShedule.RowHeadersWidth;
+            dataGridViewShedule.Columns[0].Width = (int)(0.1 * w);
+            dataGridViewShedule.Columns[1].Width = (int)(0.4 * w);
+            dataGridViewShedule.Columns[2].Width = (int)(0.4 * w);
+            dataGridViewShedule.Columns[3].Width = (int)(0.1 * w);
+            //dataGridViewShedule.Columns[0].Width = 100;
+            //dataGridViewShedule.Columns[1].Width = 289;
+            //dataGridViewShedule.Columns[2].Width = 289;
+            //dataGridViewShedule.Columns[3].Width = 100;
+            //string ans = "";
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    ans += dataGridViewShedule.Columns[i].Width.ToString() + " ";
+            //}
+            //MessageBox.Show(ans);
+            //dataGridViewShedule.Columns[1].HeaderText = "Аудитория";
             string[] weekDays = { "Пн", "Вт", "Ср", "Чт", "Пт" };
             for (int i = 0; i < 20; i += 4)
             {
@@ -75,6 +74,10 @@ namespace Schedule_Editor
                 {
                     dataGridViewShedule[col, row].Value = "";
                 }
+            }
+            for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+            {
+                ReturnToBaseRow(i);
             }
             //dataGridViewShedule.DefaultCellStyle.SelectionBackColor = dataGridViewShedule.DefaultCellStyle.BackColor;
 
@@ -111,9 +114,20 @@ namespace Schedule_Editor
             {
                 listViewAudienceDescription.Columns.Add(item, 120);
             }
-            fill();
         }
-        void updateWorkLoads()
+        void ReturnToBaseRow(int row)
+        {
+            (dataGridViewShedule[0, row] as DataGridViewTextBoxCellEx).ColumnSpan = 3;
+            if (row % 2 == 0)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    (dataGridViewShedule[i, row] as DataGridViewTextBoxCellEx).RowSpan = 2;
+                }
+            }
+
+        }
+        void UpdateWorkLoads()
         {
             using (StreamReader file = new StreamReader(curDir + @"\..\..\Files\subgroupShedule.json"))
             {
@@ -134,17 +148,27 @@ namespace Schedule_Editor
         }
         void fill()
         {
-            foreach (var subGrouSchedule in AllScheduleGroup.Shedule)
-            {
-                for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
-                {
-                    subGrouSchedule.ScheduleFieldsSubjects1[i] = "";
-                    subGrouSchedule.ScheduleFieldsAudiences[i] = "";
-                    subGrouSchedule.ScheduleFieldsSubjects2[i] = "";
-                    subGrouSchedule.ScheduleFieldsAudiences2[i] = "";
+            List<SubgroupSchedule> subgroupSchedules = new List<SubgroupSchedule>();
 
-                }
+            foreach (var gr in AllGroups.Groups)
+            {
+                subgroupSchedules.Add(new SubgroupSchedule(gr.Name));
             }
+            AllScheduleGroup = new ListSubgroupSchedule(subgroupSchedules);
+            using (StreamWriter sw = new StreamWriter(curDir + @"\..\..\Files\subgroupShedule.json"))
+                sw.WriteLine(JsonConvert.SerializeObject(AllScheduleGroup));
+
+            //foreach (var subGrouSchedule in AllScheduleGroup.Shedule)
+            //{
+            //    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+            //    {
+            //        subGrouSchedule.ScheduleFieldsSubjectsSubGroup1[i] = "";
+            //        subGrouSchedule.ScheduleFieldsAudiencesSubGroup1[i] = "";
+            //        subGrouSchedule.ScheduleFieldsSubjectsSubGroup2[i] = "";
+            //        subGrouSchedule.ScheduleFieldsAudiencesSubGroup2[i] = "";
+
+            //    }
+            //}
         }
         void ShowListViewGroup()
         {
@@ -172,18 +196,23 @@ namespace Schedule_Editor
             var infFileShGroup = new FileInfo(curDir + @"\..\..\Files\subgroupShedule.json");
             if (infFileShGroup.Length == 0)
                 AddLoads.GenerateNewLoads();
-            updateWorkLoads();
+            UpdateWorkLoads();
             ShowListViewGroup();
 
             dataGridViewAudience.Hide();
             listViewAudienceDescription.Hide();
 
             ShowAudiences();
+            //fill();
+            //Save();
+            //MessageBox.Show((dataGridViewShedule[0, 1] as DataGridViewTextBoxCellEx).OwnerCell == dataGridViewShedule[0, 1]);
+            //MessageBox.Show(((dataGridViewShedule[0, 1] as DataGridViewTextBoxCellEx).OwnerCell == dataGridViewShedule[0, 1]).ToString());
         }
 
         // при нажатии на группу заполняется таблица с расписанием и отображаюся нагрузки преподователей в листе преподователей
         private void listViewGroup_MouseClick(object sender, MouseEventArgs e)
         {
+            if (IsSplitting()) CancelSplit();
             try
             {
                 ActiveGroup = listViewGroup.SelectedItems[0].Text;
@@ -204,12 +233,13 @@ namespace Schedule_Editor
             {
                 if (subGrouSchedule.Name == ActiveGroup)
                 {
-                    for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
+                    for (int i = 0; i < dataGridViewShedule.Rows.Count; i += 2)
                     {
-                        subGrouSchedule.ScheduleFieldsSubjects1[i] = dataGridViewShedule.Rows[i].Cells[1].Value.ToString();
-                        subGrouSchedule.ScheduleFieldsAudiences[i] = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
-                        subGrouSchedule.ScheduleFieldsSubjects2[i] = dataGridViewShedule.Rows[i].Cells[2].Value.ToString() ?? "";
-                        subGrouSchedule.ScheduleFieldsAudiences2[i] = dataGridViewShedule.Rows[i].Cells[3].Value.ToString() ?? "";
+
+                        //subGrouSchedule.ScheduleFieldsSubjectsSubGroup1[i] = new ScheduleString(dataGridViewShedule.Rows[i].Cells[1].Value.ToString());
+                        //subGrouSchedule.ScheduleFieldsAudiencesSubGroup1[i] = dataGridViewShedule.Rows[i].Cells[0].Value.ToString();
+                        //subGrouSchedule.ScheduleFieldsSubjectsSubGroup2[i] = dataGridViewShedule.Rows[i].Cells[2].Value.ToString() ?? "";
+                        //subGrouSchedule.ScheduleFieldsAudiencesSubGroup2[i] = dataGridViewShedule.Rows[i].Cells[3].Value.ToString() ?? "";
 
                     }
                     break;
@@ -223,6 +253,7 @@ namespace Schedule_Editor
         }
         private void SaveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (IsSplitting()) CancelSplit();
             if (!AllScheduleGroup.IsScheduleFilled())
             {
                 var res = MessageBox.Show("Не все поля расписания заполнены. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
@@ -278,6 +309,14 @@ namespace Schedule_Editor
                 }
             }
         }
+        //bool isVerticalSplitted(int row)
+        //{
+
+        //}
+        //bool IsHorizontalSplitted(int Row)
+        //{
+        //    return
+        //}
         private void ShowShedule()
         {
             foreach (var item in AllScheduleGroup.Shedule)
@@ -286,8 +325,9 @@ namespace Schedule_Editor
                 {
                     for (int i = 0; i < dataGridViewShedule.Rows.Count; i++)
                     {
-                        dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsSubjects1[i] ?? "";
-                        dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsAudiences[i] ?? "";
+
+                        //    dataGridViewShedule.Rows[i].Cells[1].Value = item.ScheduleFieldsSubjectsSubGroup1[i] ?? "";
+                        //    dataGridViewShedule.Rows[i].Cells[0].Value = item.ScheduleFieldsAudiencesSubGroup1[i] ?? "";
                     }
                     break;
                 }
@@ -398,12 +438,76 @@ namespace Schedule_Editor
                 e.Effect = DragDropEffects.Copy;
             }
         }
+        void CancelSplit()
+        {
+            поВертикалиToolStripMenuItem.Checked = false;
+            поГоризонталиToolStripMenuItem.Checked = false;
+            соединитьToolStripMenuItem.Checked = false;
+            Cursor = Cursors.Default;
+        }
+        bool IsSplitting()
+        {
+            return поГоризонталиToolStripMenuItem.Checked || поВертикалиToolStripMenuItem.Checked || соединитьToolStripMenuItem.Checked;
+        }
+        void ClearRow(int row)
+        {
+            for (int i = 0; i < dataGridViewShedule.ColumnCount; i++)
+            {
+                dataGridViewShedule[i, row].Value = "";
+            }
+        }
         private void dataGridViewShedule_MouseDown(object sender, MouseEventArgs e)
         {
             try
             {
                 DataGridView.HitTestInfo info = dataGridViewShedule.HitTest(e.X, e.Y);
                 string s = dataGridViewShedule[info.ColumnIndex, info.RowIndex].Value.ToString();
+                if (поВертикалиToolStripMenuItem.Checked)
+                {
+                    ReturnToBaseRow(info.RowIndex);
+                    var temp = (dataGridViewShedule[0, info.RowIndex - info.RowIndex % 2] as DataGridViewTextBoxCellEx);
+                    temp.ColumnSpan = 1;
+                    
+                    for (int i = 0; i < 4; i++)
+                    {
+                        (dataGridViewShedule[i, info.RowIndex - info.RowIndex % 2] as DataGridViewTextBoxCellEx).RowSpan = 2;
+                    }
+                    
+                    ClearRow(info.RowIndex - info.RowIndex % 2);
+                    ClearRow(info.RowIndex - info.RowIndex % 2 + 1);
+                    CancelSplit();
+                    return;
+                }
+                if (поГоризонталиToolStripMenuItem.Checked)
+                {
+                    ReturnToBaseRow(info.RowIndex);
+                    var temp = (dataGridViewShedule[0, info.RowIndex - info.RowIndex % 2] as DataGridViewTextBoxCellEx);
+                    temp.RowSpan = 1;
+
+                    if ((dataGridViewShedule[0, info.RowIndex - info.RowIndex % 2] as DataGridViewTextBoxCellEx).ColumnSpan != 1)
+                    {
+                        (dataGridViewShedule[0, info.RowIndex - info.RowIndex % 2] as DataGridViewTextBoxCellEx).ColumnSpan = 3;
+                        (dataGridViewShedule[0, info.RowIndex - info.RowIndex % 2 + 1] as DataGridViewTextBoxCellEx).ColumnSpan = 3;
+                    }
+                    temp = (dataGridViewShedule[3, info.RowIndex - info.RowIndex % 2] as DataGridViewTextBoxCellEx);
+                    temp.RowSpan = 1;
+                    ClearRow(info.RowIndex - info.RowIndex % 2);
+                    ClearRow(info.RowIndex - info.RowIndex % 2 + 1);
+                    CancelSplit();
+                    return;
+                }
+                if (соединитьToolStripMenuItem.Checked)
+                {
+                    //dataGridViewShedule[0, info.RowIndex].Value = "1";
+                    //dataGridViewShedule[1, info.RowIndex].Value = "2";
+                    //MessageBox.Show("|" + dataGridViewShedule[0, info.RowIndex].Value.ToString() + " | " + dataGridViewShedule[0, info.RowIndex].Value.ToString() + "|");
+                    //MessageBox.Show((dataGridViewShedule[0, info.RowIndex - info.RowIndex % 2] as DataGridViewTextBoxCellEx).OwnerCell.Value.ToString());
+                    ReturnToBaseRow(info.RowIndex - info.RowIndex % 2);
+                    ClearRow(info.RowIndex - info.RowIndex % 2);
+                    ClearRow(info.RowIndex - info.RowIndex % 2 + 1);
+                    CancelSplit();
+                    return;
+                }
                 if (!string.IsNullOrEmpty(s))
                 {
                     dataGridViewShedule.DoDragDrop(s, DragDropEffects.Copy);
@@ -418,25 +522,48 @@ namespace Schedule_Editor
             { }
         }
 
+        bool IsRowBaseType(int row)
+        {
+            return (dataGridViewShedule[0, row - row % 2] as DataGridViewTextBoxCellEx).ColumnSpan != 1 && (dataGridViewShedule[0, row - row % 2] as DataGridViewTextBoxCellEx).RowSpan != 1;
+        }
 
+        bool IsRowSplittedVertically(int row)
+        {
+            return (dataGridViewShedule[0, row - row % 2] as DataGridViewTextBoxCellEx).ColumnSpan == 1;
+        }
         private void dataGridViewShedule_DragDrop(object sender, DragEventArgs e)
         {
-            try
+            try//tut
             {
-                string cellvalue = e.Data.GetData(typeof(string)) as string;
+                string cellValue = e.Data.GetData(typeof(string)) as string;
                 Point cursorLocation = this.PointToClient(new Point(e.X, e.Y));
 
                 DataGridView.HitTestInfo hittest = dataGridViewShedule.HitTest(cursorLocation.X, cursorLocation.Y - 24);
                 //MessageBox.Show(HasLectorFreeHours(cellvalue).ToString());
                 if (hittest.RowIndex != -1)
                 {
-                    bool IsAudience = int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1;
-                    bool IsLector = !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0;
-                    if (IsAudience && AllScheduleGroup.IsAudienceEmpty(cellvalue, hittest.RowIndex) ||
-                        IsLector && AllScheduleGroup.IsLectorFree(cellvalue, hittest.RowIndex) && HasLectorFreeHours(cellvalue))
+                    if (IsRowBaseType(hittest.RowIndex))
                     {
-                        activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
-                        dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
+
+                    }
+                    if (IsRowSplittedVertically(hittest.RowIndex))
+                    {
+                        bool IsAudience = int.TryParse(cellValue, out int _) && (hittest.ColumnIndex == 0 || hittest.ColumnIndex == 3);
+                        bool IsLector = !int.TryParse(cellValue, out int _) && (hittest.ColumnIndex == 1 || hittest.ColumnIndex == 2);
+                        if (IsAudience && AllScheduleGroup.IsAudienceEmpty(cellValue, hittest.RowIndex - hittest.RowIndex % 2) ||
+                        IsLector && AllScheduleGroup.IsLectorFree(cellValue, hittest.RowIndex) && HasLectorFreeHours(cellValue))
+                        {
+
+
+                        }
+                        //bool IsAudience = int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 1;
+                        //bool IsLector = !int.TryParse(cellvalue, out int _) && hittest.ColumnIndex == 0;
+                        if (IsAudience && AllScheduleGroup.IsAudienceEmpty(cellValue, hittest.RowIndex) ||
+                        IsLector && AllScheduleGroup.IsLectorFree(cellValue, hittest.RowIndex) && HasLectorFreeHours(cellValue))
+                        {
+                            activeDiscipline = dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value.ToString();
+                            dataGridViewShedule[hittest.ColumnIndex, hittest.RowIndex].Value = cellValue;
+                        }
                     }
                 }
 
@@ -464,6 +591,7 @@ namespace Schedule_Editor
 
         private void ShedulesForm_Click(object sender, EventArgs e)
         {
+            if (IsSplitting()) CancelSplit();
             listViewSubjects.Show();
             dataGridViewAudience.Hide();
             listViewAudienceDescription.Hide();
@@ -471,11 +599,43 @@ namespace Schedule_Editor
 
         private void AddLoadsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (IsSplitting()) CancelSplit();
             AddLoads.GenerateNewLoads();
-            updateWorkLoads();
+            UpdateWorkLoads();
             ShowListViewGroup();
         }
 
+        private void SeparateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (IsSplitting()) CancelSplit();
+        }
 
+        private void поВертикалиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            поВертикалиToolStripMenuItem.Checked = true;
+            Cursor = Cursors.VSplit;
+        }
+
+        private void поГоризонталиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            поГоризонталиToolStripMenuItem.Checked = true;
+            Cursor = Cursors.HSplit;
+        }
+
+        private void соединитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            Obiectum obiectum = new Obiectum("qqq", "1");
+            ClassRow classRow = new ClassRow(RowTypes.TwoGroupsAndTwoWeeks, obiectum);
+            //MessageBox.Show(classRow.CountOfWeeks.ToString());
+            classRow.VisualizeRow(dataGridViewShedule, 0);
+            if (IsSplitting())
+            {
+                CancelSplit();
+                return;
+            }
+            соединитьToolStripMenuItem.Checked = true;
+            Cursor = Cursors.SizeAll;
+        }
     }
 }

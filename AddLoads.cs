@@ -76,10 +76,11 @@ namespace Schedule_Editor
                                     if (!ListGroups.ContainsGroup(listGroups, group[i]))
                                     {
                                         listGroups.Add(new Group(group[i]));
-                                        var temp = new List<string>();
+                                        var temp = new List<ScheduleString>(20);
                                         for (int r = 0; r < 20; r++)
                                         {
-                                            temp.Add("");
+                                            temp[i] = new ScheduleString("", "");
+                                            //temp.Add("");
                                         }
                                         subgroupShedule.Add(new SubgroupSchedule(group[i], temp, temp, temp, temp));
                                     }
