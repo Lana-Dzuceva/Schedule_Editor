@@ -98,6 +98,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Files\audienceGroup.json" />
     <None Include="Files\B010302-21-1-ПМ_1.plx.xls" />
     <None Include="Files\groups.json" />

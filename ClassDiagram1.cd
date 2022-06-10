@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Schedule_Editor.AddLoads" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAgAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AddLoads.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.Audience" Collapsed="true">
+    <Position X="10.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAAAACAAEAAAAAAEAEAAAAAAAAAAAAAQAAAAAAAAIAA=</HashCode>
+      <FileName>Audience.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.AudienceGroup" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAEAAAAAAAAAAQAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Audience.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.ListTeachers" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>ListTeachers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.Group" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ListTeachers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.ListGroups" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>ListTeachers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.ScheduleString" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>ListTeachers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.SubgroupSchedule" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAQAAAAMAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>ListTeachers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.ListSubgroupSchedule" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAAAAAAAAAABQAAAAAAAEACAAAAAAAAAAAAA=</HashCode>
+      <FileName>ListTeachers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.Program" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.SaveSchedule" Collapsed="true">
+    <Position X="12.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SaveSchedule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.ScheduleEditor" Collapsed="true">
+    <Position X="12.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GbAwAIMAYCIgIBBgADyAAIIOAlIRgQGDCS20wAEUgFA=</HashCode>
+      <FileName>ScheduleEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.Teacher" Collapsed="true">
+    <Position X="9" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Teacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.ListSubjects" Collapsed="true">
+    <Position X="9" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Teacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schedule_Editor.Subject" Collapsed="true">
+    <Position X="9" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAQQAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Teacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shedule_Editor.Obiectum" Collapsed="true">
+    <Position X="9.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassRow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shedule_Editor.ClassRow" Collapsed="true">
+    <Position X="10.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAgADAAAAAQACIAABABAAAAAAAgAAAAIAAA=</HashCode>
+      <FileName>ClassRow.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RowTypes" />
+      <Property Name="Obiectum" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Shedule_Editor.Properties.Resources" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shedule_Editor.Properties.Settings" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Schedule_Editor.ScheduleRows">
+    <Position X="6.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAACAAAAAAAA=</HashCode>
+      <FileName>ListTeachers.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Shedule_Editor.RowTypes" Collapsed="true">
+    <Position X="11.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIACAAAAAAAAAAAQAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ClassRow.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

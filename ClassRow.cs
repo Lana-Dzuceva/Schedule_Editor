@@ -100,6 +100,22 @@ namespace Shedule_Editor
         public int CountOfWeeks { get; private set; }
         public int CountOfGroups { get; private set; }
 
+        public RowTypes RowTypes
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Obiectum Obiectum
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
         public ClassRow(RowTypes rowType, Obiectum group1week1, Obiectum group1week2 = null, Obiectum group2week1 = null, Obiectum group2week2 = null)
         {
             RowType = rowType;
